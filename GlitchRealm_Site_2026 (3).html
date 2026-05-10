@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlitchRealm — Production Tools & Sound Kits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #22d3ee;
+  --teal2: #00ffcc;
+  --hot: #ff00aa;
+  --purple: #a78bfa;
+  --dark: #04060a;
+  --dark2: #080c14;
+  --panel: rgba(8,12,22,0.85);
+  --border: rgba(34,211,238,0.12);
+  --text: #8a9ab8;
+  --white: #e8f0f8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--dark);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cursor {
+  width: 8px; height: 8px;
+  background: var(--teal);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.1s, background 0.2s;
+  box-shadow: 0 0 12px var(--teal);
+}
+#cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(34,211,238,0.4);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.15s ease, width 0.2s, height 0.2s, border-color 0.2s;
+}
+a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2.5); }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center;
+  padding: 0 40px;
+  height: 64px;
+  background: rgba(4,6,10,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--teal);
+  letter-spacing: 3px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.nav-links {
+  display: flex; gap: 32px;
+  margin: 0 auto;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--teal); }
+.nav-cta {
+  background: transparent;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 3px;
+  cursor: none;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: var(--teal); color: #000; }
+
+/* ── HERO ── */
+#hero {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+#heroCanvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(4,6,10,0.9) 0%, rgba(4,6,10,0.4) 50%, rgba(4,6,10,0.85) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 40px;
+  max-width: 700px;
+  animation: heroIn 1.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes heroIn {
+  from { opacity:0; transform: translateY(40px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--teal);
+}
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 0.92;
+  color: var(--white);
+  margin-bottom: 28px;
+  letter-spacing: -2px;
+}
+.hero-title .accent { color: var(--teal); }
+.hero-title .dim { color: rgba(232,240,248,0.25); }
+.hero-body {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text);
+  max-width: 460px;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+.hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--teal);
+  color: #000;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: none;
+}
+.btn-primary:hover { background: var(--teal2); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(34,211,238,0.3); }
+.btn-ghost {
+  color: var(--white);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: color 0.2s;
+  cursor: none;
+}
+.btn-ghost:hover { color: var(--teal); }
+.btn-ghost::after { content: '→'; transition: transform 0.2s; }
+.btn-ghost:hover::after { transform: translateX(4px); }
+
+/* Hero stats */
+.hero-stats {
+  position: absolute;
+  bottom: 48px; right: 40px;
+  display: flex; gap: 40px;
+  z-index: 2;
+  animation: heroIn 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+}
+.stat { text-align: right; }
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Scroll indicator */
+.scroll-ind {
+  position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
+  z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: heroIn 1.6s cubic-bezier(0.16,1,0.3,1) 0.4s both;
+}
+.scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, transparent, var(--teal));
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity:0.3; transform: scaleY(1); }
+  50% { opacity:1; transform: scaleY(1.2); }
+}
+.scroll-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 3px;
+  color: var(--teal); text-transform: uppercase; opacity: 0.6;
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  background: var(--teal);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 20s linear infinite;
+}
+.marquee-track span {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #000;
+  padding: 0 32px;
+}
+.marquee-dot { color: rgba(0,0,0,0.4); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── SECTIONS ── */
+section { padding: 120px 40px; }
+.section-header { margin-bottom: 64px; }
+.section-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 4px;
+  color: var(--teal); text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-eyebrow::before { content:''; width:24px; height:1px; background:var(--teal); }
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 52px);
+  color: var(--white);
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+.section-title .acc { color: var(--teal); }
+
+/* ── TOOLS SECTION ── */
+#tools { background: var(--dark); }
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tool-card {
+  background: var(--dark2);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+  text-decoration: none;
+  display: block;
+}
+.tool-card:hover { background: rgba(10,16,28,1); }
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--teal), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tool-card:hover::before { opacity: 1; }
+.tool-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+.tag-free { background: rgba(34,211,238,0.1); color: var(--teal); border: 1px solid rgba(34,211,238,0.2); }
+.tag-new  { background: rgba(255,0,170,0.1); color: var(--hot); border: 1px solid rgba(255,0,170,0.2); }
+.tool-icon {
+  font-size: 36px; margin-bottom: 20px;
+  display: block;
+  filter: grayscale(0.3);
+  transition: filter 0.2s, transform 0.2s;
+}
+.tool-card:hover .tool-icon { filter: none; transform: scale(1.1); }
+.tool-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--white);
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+.tool-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+.tool-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  display: flex; align-items: center; gap: 6px;
+  transition: gap 0.2s;
+}
+.tool-card:hover .tool-link { gap: 12px; }
+.tool-link::after { content: '→'; }
+.tool-number {
+  position: absolute;
+  bottom: 32px; right: 32px;
+  font-family: 'Syne', sans-serif;
+  font-size: 72px; font-weight: 800;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── PRODUCTS SECTION ── */
+#products { background: var(--dark2); }
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+.product-card {
+  background: var(--dark);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+  cursor: none;
+  text-decoration: none;
+  display: block;
+}
+.product-card:hover { transform: translateY(-6px); border-color: rgba(34,211,238,0.2); }
+.product-img {
+  width: 100%; aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.4s;
+  background: #0a0e18;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+}
+.product-card:hover .product-img { transform: scale(1.04); }
+.product-info { padding: 20px; }
+.product-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--white);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.product-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--teal);
+  letter-spacing: 1px;
+}
+.product-cat {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(138,154,184,0.5);
+  margin-bottom: 8px;
+}
+
+/* ── VISUALIZER CTA ── */
+#viz-cta {
+  padding: 0;
+  position: relative;
+  height: 70vh;
+  min-height: 500px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+#vizCtaCanvas {
+  position: absolute; inset: 0;
+  opacity: 0.5;
+}
+.viz-cta-overlay {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(4,6,10,0.3) 0%, rgba(4,6,10,0.9) 100%);
+}
+.viz-cta-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 40px;
+}
+.viz-cta-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px,6vw,72px);
+  color: var(--white);
+  letter-spacing: -2px;
+  line-height: 0.95;
+  margin-bottom: 20px;
+}
+.viz-cta-title .acc { color: var(--teal); }
+.viz-cta-sub {
+  font-size: 15px; font-weight: 300;
+  color: var(--text);
+  margin-bottom: 36px;
+  max-width: 440px;
+  margin-left: auto; margin-right: auto;
+  line-height: 1.6;
+}
+
+/* ── UPDATES SECTION ── */
+#updates { background: var(--dark); }
+.updates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.update-card {
+  background: var(--dark2);
+  padding: 32px;
+  transition: background 0.2s;
+}
+.update-card:hover { background: rgba(10,16,28,1); }
+.update-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 10px; border-radius: 2px;
+  margin-bottom: 16px; display: inline-block;
+}
+.u-sync  { background:rgba(34,211,238,0.1);color:var(--teal);border:1px solid rgba(34,211,238,0.2); }
+.u-depth { background:rgba(255,0,170,0.1);color:var(--hot);border:1px solid rgba(255,0,170,0.2); }
+.u-vis   { background:rgba(167,139,250,0.1);color:var(--purple);border:1px solid rgba(167,139,250,0.2); }
+.u-fx    { background:rgba(251,191,36,0.08);color:#fbbf24;border:1px solid rgba(251,191,36,0.2); }
+.u-ux    { background:rgba(52,211,153,0.08);color:#34d399;border:1px solid rgba(52,211,153,0.2); }
+.u-pre   { background:rgba(56,189,248,0.08);color:#38bdf8;border:1px solid rgba(56,189,248,0.2); }
+.update-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 16px;
+  color: var(--white); margin-bottom: 10px;
+}
+.update-desc {
+  font-size: 12px; line-height: 1.6;
+  color: var(--text); font-weight: 300;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark2);
+  border-top: 1px solid var(--border);
+  padding: 60px 40px 40px;
+}
+.footer-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; flex-wrap: wrap; gap: 40px;
+  margin-bottom: 48px;
+}
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800; font-size: 22px;
+  color: var(--teal); letter-spacing: 3px;
+}
+.footer-tagline {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--text); text-transform: uppercase;
+  margin-top: 6px;
+}
+.footer-links { display: flex; gap: 48px; flex-wrap: wrap; }
+.footer-col-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 3px;
+  color: var(--teal); text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.footer-col a {
+  display: block; color: var(--text);
+  font-size: 12px; text-decoration: none;
+  margin-bottom: 10px; transition: color 0.2s;
+  cursor: none;
+}
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 16px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 1px;
+  color: rgba(138,154,184,0.4);
+}
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.fade-up.visible { opacity:1; transform:translateY(0); }
+.fade-up:nth-child(2){transition-delay:.1s}
+.fade-up:nth-child(3){transition-delay:.2s}
+.fade-up:nth-child(4){transition-delay:.3s}
+.fade-up:nth-child(5){transition-delay:.4s}
+.fade-up:nth-child(6){transition-delay:.5s}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">GLITCHREALM</a>
+  <ul class="nav-links">
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#products">Store</a></li>
+    <li><a href="#updates">Updates</a></li>
+    <li><a href="https://glitchrealm.com">Site</a></li>
+  </ul>
+  <a href="https://glitchrealm.com/store" class="nav-cta">Shop Now</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">GlitchRealm 2026</div>
+    <h1 class="hero-title">
+      MAKE<br>
+      <span class="accent">BETTER</span><br>
+      <span class="dim">MUSIC.</span>
+    </h1>
+    <p class="hero-body">
+      Production tools, sound kits, and MIDI packs built by a producer, for producers. Free tools. Premium sounds. No fluff.
+    </p>
+    <div class="hero-actions">
+      <a href="https://glitchrealm.com/store" class="btn-primary">Browse the Store</a>
+      <a href="https://sledgren.github.io/midi-visualizer" class="btn-ghost">Try MIDI Visualizer</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">13</div>
+      <div class="stat-label">Color Presets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Free</div>
+      <div class="stat-label">Visualizer Tool</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2026</div>
+      <div class="stat-label">Season</div>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <div class="scroll-line"></div>
+    <div class="scroll-label">Scroll</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>MIDI Loops</span><span class="marquee-dot">·</span>
+    <span>Sound Kits</span><span class="marquee-dot">·</span>
+    <span>MIDI Visualizer</span><span class="marquee-dot">·</span>
+    <span>Chord Builder</span><span class="marquee-dot">·</span>
+    <span>Glide Loops</span><span class="marquee-dot">·</span>
+    <span>Orchestral Scores</span><span class="marquee-dot">·</span>
+    <span>Royalty Free</span><span class="marquee-dot">·</span>
+    <span>Export MP4</span><span class="marquee-dot">·</span>
+    <span>MIDI Loops</span><span class="marquee-dot">·</span>
+    <span>Sound Kits</span><span class="marquee-dot">·</span>
+    <span>MIDI Visualizer</span><span class="marquee-dot">·</span>
+    <span>Chord Builder</span><span class="marquee-dot">·</span>
+    <span>Glide Loops</span><span class="marquee-dot">·</span>
+    <span>Orchestral Scores</span><span class="marquee-dot">·</span>
+    <span>Royalty Free</span><span class="marquee-dot">·</span>
+    <span>Export MP4</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Free Tools</div>
+    <h2 class="section-title">Built for <span class="acc">producers</span><br>who actually make music</h2>
+  </div>
+  <div class="tools-grid">
+    <a href="https://sledgren.github.io/midi-visualizer" class="tool-card fade-up">
+      <span class="tool-tag tag-new">New v7</span>
+      <span class="tool-icon">🎹</span>
+      <div class="tool-name">MIDI Visualizer</div>
+      <div class="tool-desc">Drop your MIDI and audio. Get a cinema-quality visualization with 13 color presets, depth perspective, bloom FX, and video export. Free in the browser.</div>
+      <div class="tool-link">Open Visualizer</div>
+      <div class="tool-number">01</div>
+    </a>
+    <a href="https://sledgren.github.io/chord-lab" class="tool-card fade-up">
+      <span class="tool-tag tag-free">Free</span>
+      <span class="tool-icon">🎵</span>
+      <div class="tool-name">Chord Builder</div>
+      <div class="tool-desc">Build and explore chord progressions visually. Find the right voicings, export MIDI, and never get stuck on chord theory again.</div>
+      <div class="tool-link">Open Chord Builder</div>
+      <div class="tool-number">02</div>
+    </a>
+    <div class="tool-card fade-up" style="opacity:0.5">
+      <span class="tool-tag tag-free">Coming Soon</span>
+      <span class="tool-icon">🥁</span>
+      <div class="tool-name">Drum Pattern Lab</div>
+      <div class="tool-desc">A visual drum sequencer with humanization, swing, and MIDI export. Built for the way producers actually think about rhythm.</div>
+      <div class="tool-link" style="color:var(--text)">In Development</div>
+      <div class="tool-number">03</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Store</div>
+    <h2 class="section-title">Premium sounds<br><span class="acc">royalty free</span></h2>
+  </div>
+  <div class="products-grid">
+    <a href="https://glitchrealm.com/store" class="product-card fade-up">
+      <div class="product-img">🎼</div>
+      <div class="product-info">
+        <div class="product-cat">MIDI Pack</div>
+        <div class="product-name">Midi Pack By Sledgren 2026</div>
+        <div class="product-price">$19.99</div>
+      </div>
+    </a>
+    <a href="https://glitchrealm.com/store" class="product-card fade-up">
+      <div class="product-img">🌊</div>
+      <div class="product-info">
+        <div class="product-cat">Sound Kit</div>
+        <div class="product-name">Glide Loops — by Sledgren</div>
+        <div class="product-price">$19.99</div>
+      </div>
+    </a>
+    <a href="https://glitchrealm.com/store" class="product-card fade-up">
+      <div class="product-img">🎻</div>
+      <div class="product-info">
+        <div class="product-cat">Orchestral</div>
+        <div class="product-name">Orchestral Scores Vol.1 2026</div>
+        <div class="product-price">$19.99</div>
+      </div>
+    </a>
+    <a href="https://glitchrealm.com/store" class="product-card fade-up">
+      <div class="product-img" style="font-size:32px;padding:40px;text-align:center;background:linear-gradient(135deg,#03080f,#0a1628)">
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#22d3ee;letter-spacing:3px">VIEW ALL</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">All Products</div>
+        <div class="product-name">Browse Full Store</div>
+        <div class="product-price" style="color:var(--text)">glitchrealm.com →</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- VIZ CTA -->
+<section id="viz-cta">
+  <canvas id="vizCtaCanvas"></canvas>
+  <div class="viz-cta-overlay"></div>
+  <div class="viz-cta-content fade-up">
+    <h2 class="viz-cta-title">SEE YOUR<br><span class="acc">MIDI</span><br>COME ALIVE</h2>
+    <p class="viz-cta-sub">Drop any MIDI file. Watch every note render in real time. Export the video. Free forever.</p>
+    <a href="https://sledgren.github.io/midi-visualizer" class="btn-primary">Launch Visualizer →</a>
+  </div>
+</section>
+
+<!-- UPDATES -->
+<section id="updates">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">Changelog · v7</div>
+    <h2 class="section-title">What just<br><span class="acc">got better</span></h2>
+  </div>
+  <div class="updates-grid">
+    <div class="update-card fade-up">
+      <span class="update-tag u-sync">Sync</span>
+      <div class="update-title">Audio / MIDI Timing Engine</div>
+      <div class="update-desc">Direct clock sync using <code style="color:var(--teal);font-size:11px">currentTime × tpb × (bpm/60)</code> — same formula a DAW uses. No drift, no ratio math, no padding bugs.</div>
+    </div>
+    <div class="update-card fade-up">
+      <span class="update-tag u-depth">Depth</span>
+      <div class="update-title">3D Perspective System</div>
+      <div class="update-desc">Full pitch grid compression toward the horizon. The whole arrangement converges — not just note size. Dual-axis convergence creates a real tunnel effect.</div>
+    </div>
+    <div class="update-card fade-up">
+      <span class="update-tag u-vis">Visual</span>
+      <div class="update-title">Note Rendering Quality</div>
+      <div class="update-desc">5-layer note rendering — halo, body gradient, center highlight line, depth scale, and inactive fade. Every note looks lit from within.</div>
+    </div>
+    <div class="update-card fade-up">
+      <span class="update-tag u-pre">Presets</span>
+      <div class="update-title">13 Full Colorways</div>
+      <div class="update-desc">Aurora Ultra, Miami Vice, Neochrome, Cold Glass, Arcade Fire and 8 more. Each sets background, bloom, particle color, and all track colors in one click.</div>
+    </div>
+    <div class="update-card fade-up">
+      <span class="update-tag u-fx">FX</span>
+      <div class="update-title">Particles & Bloom</div>
+      <div class="update-desc">Stars animate from page open. Bloom intensity, count, size, speed, and color all independently controlled. Ripple rings on every active note.</div>
+    </div>
+    <div class="update-card fade-up">
+      <span class="update-tag u-ux">Export</span>
+      <div class="update-title">Video Bounce</div>
+      <div class="update-desc">Full-screen bounce overlay with live preview and progress bar. Exports WebM — plays in Chrome, Firefox, Android, Windows. MP4 option available.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">GLITCHREALM</div>
+      <div class="footer-tagline">Production tools & sounds by Sledgren</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <div class="footer-col-title">Tools</div>
+        <a href="https://sledgren.github.io/midi-visualizer">MIDI Visualizer</a>
+        <a href="https://sledgren.github.io/chord-lab">Chord Builder</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Store</div>
+        <a href="https://glitchrealm.com/store">All Products</a>
+        <a href="https://glitchrealm.com/store">MIDI Packs</a>
+        <a href="https://glitchrealm.com/store">Sound Kits</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Connect</div>
+        <a href="#">Twitter / X</a>
+        <a href="#">Instagram</a>
+        <a href="https://glitchrealm.com">GlitchRealm.com</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 GlitchRealm / Sledgren. All rights reserved.</div>
+    <div class="footer-copy">Built different.</div>
+  </div>
+</footer>
+
+<script>
+// ── Custom cursor ──
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+function animRing(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+animRing();
+
+// ── Hero canvas — animated MIDI notes ──
+(function(){
+  const cv = document.getElementById('heroCanvas');
+  const cx = cv.getContext('2d');
+  let W,H;
+  function resize(){ W=cv.width=cv.offsetWidth; H=cv.height=cv.offsetHeight; }
+  window.addEventListener('resize',resize); resize();
+
+  const COLORS = ['#22d3ee','#00ffcc','#ff00aa','#a78bfa','#ff6ef7','#00e5ff','#ff3de8'];
+  const notes = Array.from({length:40},(_,i)=>({
+    x: Math.random()*1.5 - 0.25,
+    y: 0.1 + Math.random()*0.8,
+    w: 0.04 + Math.random()*0.14,
+    h: 0.012 + Math.random()*0.018,
+    col: COLORS[i%COLORS.length],
+    spd: 0.0003 + Math.random()*0.0004,
+    phase: Math.random()*Math.PI*2,
+    active: Math.random() > 0.6
+  }));
+
+  let t=0;
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    t+=0.008;
+    notes.forEach((n,i)=>{
+      n.x -= n.spd;
+      if(n.x + n.w < 0) { n.x=1.1; n.y=0.1+Math.random()*0.8; n.active=Math.random()>0.6; }
+      const x=n.x*W, y=n.y*H, w=n.w*W, h=n.h*H;
+      const pulse = n.active ? 0.7+0.3*Math.sin(t*3+n.phase) : 0.35;
+      const r2=parseInt(n.col.slice(1,3),16);
+      const g2=parseInt(n.col.slice(3,5),16);
+      const b2=parseInt(n.col.slice(5,7),16);
+      if(n.active){ cx.shadowBlur=20; cx.shadowColor=n.col; }
+      cx.globalAlpha=pulse;
+      const grad=cx.createLinearGradient(x,y,x,y+h);
+      grad.addColorStop(0,`rgba(255,255,255,0.9)`);
+      grad.addColorStop(0.3,n.col);
+      grad.addColorStop(1,`rgba(${Math.round(r2*.3)},${Math.round(g2*.3)},${Math.round(b2*.3)},1)`);
+      cx.fillStyle=grad;
+      cx.beginPath(); cx.roundRect(x,y,w,h,2); cx.fill();
+      cx.shadowBlur=0;
+      if(n.active){
+        cx.globalAlpha=pulse*0.9;
+        cx.fillStyle=`rgba(255,255,255,0.9)`;
+        cx.fillRect(x+4,y+h*0.28,w-8,Math.max(1,h*0.22));
+      }
+    });
+    cx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── VIZ CTA canvas ──
+(function(){
+  const cv = document.getElementById('vizCtaCanvas');
+  const cx = cv.getContext('2d');
+  let W,H;
+  function resize(){ W=cv.width=cv.offsetWidth; H=cv.height=cv.offsetHeight; }
+  window.addEventListener('resize',resize); resize();
+  const COLORS=['#00ffcc','#22d3ee','#ff00aa','#a78bfa'];
+  const ripples=[];
+  let t=0;
+  setInterval(()=>{ ripples.push({x:W*0.3+Math.random()*W*0.4, y:H*0.2+Math.random()*H*0.6, r:0, col:COLORS[Math.floor(Math.random()*COLORS.length)], life:1}); },400);
+  function draw(){
+    cx.clearRect(0,0,W,H); t+=0.02;
+    for(let i=ripples.length-1;i>=0;i--){
+      const r=ripples[i]; r.r+=2.5; r.life-=0.012;
+      if(r.life<=0){ripples.splice(i,1);continue;}
+      cx.globalAlpha=r.life*0.5;
+      cx.strokeStyle=r.col; cx.lineWidth=1.5;
+      cx.beginPath(); cx.arc(r.x,r.y,r.r,0,Math.PI*2); cx.stroke();
+    }
+    cx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── Stars in hero ──
+(function(){
+  const cv=document.getElementById('heroCanvas');
+  // stars drawn on same canvas after notes
+})();
+
+// ── Scroll animations ──
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
