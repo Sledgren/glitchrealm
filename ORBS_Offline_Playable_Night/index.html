@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ORBS - A Glitcher Adventure</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section id="menu-screen" class="menu-screen" aria-label="ORBS main menu">
+        <div class="menu-root">
+          <div class="bg-layer"></div>
+          <div class="stars" id="menu-stars"></div>
+          <div class="scanlines"></div>
+          <div class="vignette"></div>
+          <div class="pixel-border-top"></div>
+          <div class="pixel-border-bottom"></div>
+          <div class="pixel-border-left"></div>
+          <div class="pixel-border-right"></div>
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <div class="content">
+            <div class="orb-container" aria-hidden="true">
+              <div class="orb-glow"></div>
+              <div class="menu-orb"><div class="menu-orb-shine"></div></div>
+              <div class="menu-pedestal"></div>
+            </div>
+            <div class="title-block">
+              <span class="title-main">ORBS</span>
+              <span class="title-sub">A GLITCHER ADVENTURE</span>
+            </div>
+            <div class="score-bar">
+              <div class="score-item">HI <span id="hiscore">000000</span></div>
+              <div class="score-item">CR <span>03</span></div>
+            </div>
+            <div class="decor-gems" aria-hidden="true">
+              <span class="gem gem-red"></span>
+              <span class="gem gem-orange"></span>
+              <span class="gem gem-gold"></span>
+              <span class="gem gem-orange"></span>
+              <span class="gem gem-red"></span>
+            </div>
+            <div class="menu-panel">
+              <div class="menu-inner-top"></div>
+              <button class="menu-item active" type="button" data-menu-index="0">PLAY GAME</button>
+              <button class="menu-item" type="button" data-menu-index="1">PLAY DEMO</button>
+              <button class="menu-item" type="button" data-menu-index="2">SOUNDTRACK</button>
+              <button class="menu-item" type="button" data-menu-index="3">SETTINGS</button>
+              <button class="menu-item" type="button" data-menu-index="4">CREDITS</button>
+              <button class="menu-item locked" type="button" data-menu-index="5">WORLDS 2-8<span class="dlc-badge">LOCKED</span></button>
+              <div class="menu-inner-bottom"></div>
+            </div>
+            <div class="coin-text">GLITCHER AWAKENS.</div>
+            <div class="version">CLICK PLAY GAME OR PRESS ENTER</div>
+            <div class="version">8 ORBS. ONE HERO. ENDLESS CHAOS.</div>
+          </div>
+        </div>
+      </section>
+      <canvas id="game" width="960" height="540" aria-label="ORBS game canvas"></canvas>
+      <div class="controls">
+        <span>A / D: move Glitcher</span>
+        <span>Space: jump / double jump</span>
+        <span>F / J: purple sword</span>
+        <span>Controller: stick move, A jump, X sword</span>
+        <span>Goal: collect 8 hidden orbs</span>
+        <span>Esc: menu</span>
+      </div>
+    </main>
+    <script src="./glitcher.js?v=glitcher-6hp-air-sword-idle"></script>
+  </body>
+</html>
