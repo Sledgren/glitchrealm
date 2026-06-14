@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GlitchRealm — Production Tools & Sound Kits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --panel: #f5f4ef;
+    --ink: #15151c;
+    --dim: rgba(21,21,28,0.55);
+    --border: rgba(21,21,28,0.12);
+    --accent: #6657c9;
+    --gold: #b8842a;
+    --dark: #0b0b10;
+    --dark-dim: rgba(240,238,232,0.5);
+    --dark-border: rgba(240,238,232,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(10px);
+    z-index: 50;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .nav-logo img { height: 34px; display: block; }
+  .nav-logo span {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+  .nav-links a {
+    color: var(--dim);
+    text-decoration: none;
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .soon-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 1px 5px;
+    margin-left: 6px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  .nav-ctas { display: flex; gap: 10px; align-items: center; }
+
+  .btn-ghost {
+    padding: 8px 18px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+  .btn-solid {
+    padding: 8px 20px;
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-solid:hover { background: var(--accent); border-color: var(--accent); }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .nav-ctas .btn-ghost { display: none; }
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    text-align: center;
+    padding: 64px 24px 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-logo {
+    width: clamp(110px, 14vw, 180px);
+    margin: 0 auto 22px;
+    display: block;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 22px;
+  }
+  .hero-h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    max-width: 540px;
+    margin: 0 auto 30px;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--dim);
+  }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    padding: 13px 30px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-secondary {
+    padding: 13px 30px;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--border);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--ink); }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    background: var(--panel);
+    overflow: hidden;
+  }
+  .ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--dim);
+    text-transform: uppercase;
+    padding: 0 32px;
+  }
+  .ticker-item span { color: var(--accent); margin-right: 8px; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ─── STATS ─── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    padding: 30px 24px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--ink);
+    display: block;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 64px 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .full-bleed { width: 100%; border-bottom: 1px solid var(--border); }
+  .full-bleed.panel { background: var(--panel); }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--dim); }
+
+  .section-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 40px;
+  }
+  .section-h2 em { font-style: italic; color: var(--accent); }
+
+  @media (max-width: 900px) { section { padding: 44px 20px; } }
+
+  /* ─── TOOLS GRID ─── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .tool-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .tool-card:hover { box-shadow: 0 12px 30px rgba(21,21,28,0.08); transform: translateY(-2px); }
+  .tool-card-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .tool-preview {
+    height: 150px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #08080c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tool-preview svg { width: 100%; height: 100%; }
+  .tool-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; }
+  .tool-desc { font-size: 0.85rem; line-height: 1.6; color: var(--dim); flex: 1; }
+  .tool-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+  .tool-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    align-self: flex-start;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tool-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  @media (max-width: 900px) { .tools-grid { grid-template-columns: 1fr; } }
+
+  /* ─── MIDI VISUALIZER EMBED ─── */
+  .viz-text { text-align: center; max-width: 640px; margin: 0 auto 36px; }
+  .viz-text p { font-size: 0.95rem; line-height: 1.75; color: var(--dim); margin-top: 12px; }
+  .viz-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--dark);
+    box-shadow: 0 24px 60px rgba(21,21,28,0.12);
+  }
+  .viz-card iframe {
+    width: 100%;
+    height: 640px;
+    border: 0;
+    display: block;
+  }
+  .viz-fallback {
+    text-align: center;
+    margin-top: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--dim);
+  }
+  .viz-fallback a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+  @media (max-width: 900px) { .viz-card iframe { height: 460px; } }
+
+  /* ─── STORE / MERCH GRID ─── */
+  .store-grid, .merch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .product-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .product-card:hover { box-shadow: 0 12px 30px rgba(21,21,28,0.08); transform: translateY(-2px); }
+  .product-img-wrap {
+    height: 200px;
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .product-info { padding: 14px 16px 18px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .product-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .product-name { font-size: 0.88rem; font-weight: 500; line-height: 1.35; color: var(--ink); margin-top: 4px; flex: 1; }
+  .product-price { font-family: 'Space Mono', monospace; font-size: 0.78rem; color: var(--accent); margin-top: 8px; }
+  .product-price.soon { color: var(--dim); font-style: italic; font-size: 0.7rem; }
+
+  .new-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: var(--ink); color: #fff;
+    font-family: monospace; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; padding: 4px 9px; border-radius: 2px; text-transform: uppercase;
+  }
+  .product-card--new { outline: 1px solid var(--accent); }
+
+  @media (max-width: 900px) { .store-grid, .merch-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ─── MERCH PLACEHOLDER ─── */
+  .merch-placeholder {
+    height: 200px;
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .merch-icon {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-align: center;
+    padding: 0 12px;
+  }
+  .merch-note {
+    margin-top: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+    text-align: center;
+  }
+
+  /* ─── CHANGELOG ─── */
+  .changelog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .changelog-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 26px 24px;
+  }
+  .cl-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cl-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .cl-desc { font-size: 0.82rem; line-height: 1.65; color: var(--dim); }
+  @media (max-width: 900px) { .changelog-grid { grid-template-columns: 1fr; } }
+
+  /* ─── ARCADE + ORBS (merged, kept dark) ─── */
+  #arcade-section {
+    background: var(--dark);
+    color: var(--dark-dim);
+  }
+  .arcade-inner {
+    display: flex;
+    align-items: center;
+    gap: 56px;
+    padding: 56px 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .arcade-img-col { flex-shrink: 0; width: clamp(220px, 32vw, 380px); }
+  .arcade-img-wrap {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .arcade-img-wrap img { width: 100%; height: auto; display: block; }
+  .arcade-badge {
+    position: absolute; top: 14px; left: 14px;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--dark-border);
+    border-radius: 2px;
+    font-family: monospace; font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--dark-dim);
+    backdrop-filter: blur(8px);
+  }
+  .arcade-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.15; } }
+
+  .arcade-text-col { flex: 1; min-width: 0; }
+  .arcade-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--dark-dim);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .arcade-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 1.02;
+    color: #f0eee8;
+    margin-bottom: 18px;
+    letter-spacing: -0.02em;
+  }
+  .arcade-title em { font-style: italic; color: var(--accent); }
+  .arcade-sub { font-size: 0.92rem; line-height: 1.8; color: var(--dark-dim); max-width: 480px; margin-bottom: 24px; }
+  .arcade-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .arcade-tag {
+    padding: 6px 14px;
+    border: 1px solid var(--dark-border);
+    border-radius: 2px;
+    font-family: monospace; font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dark-dim);
+  }
+  .arcade-tag--soon { border-color: rgba(102,87,201,0.4); color: #b3a8ff; }
+
+  @media (max-width: 860px) {
+    .arcade-inner { flex-direction: column; gap: 32px; padding: 40px 20px; text-align: center; }
+    .arcade-img-col { width: 100%; max-width: 320px; }
+    .arcade-tags { justify-content: center; }
+    .arcade-sub { margin-left: auto; margin-right: auto; }
+  }
+
+  /* ─── REALM x ICEMAN ─── */
+  /* ─── DRAKE / ICEMAN SPOTLIGHT ─── */
+  .iceman-spotlight {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--dark);
+    border-radius: 6px;
+    padding: 18px 24px;
+    margin-bottom: 40px;
+  }
+  .iceman-spotlight img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+    opacity: 0.9;
+  }
+  .iceman-spotlight-text { flex: 1; }
+  .iceman-spotlight-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #f0eee8;
+  }
+  .iceman-spotlight-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #f0eee8;
+    text-decoration: none;
+    border: 1px solid rgba(240,238,232,0.25);
+    padding: 9px 20px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .iceman-spotlight-link:hover { border-color: #f0eee8; background: rgba(240,238,232,0.06); }
+  @media (max-width: 600px) {
+    .iceman-spotlight { flex-direction: column; align-items: flex-start; }
+    .iceman-spotlight-link { align-self: stretch; text-align: center; }
+  }
+
+  #realm-iceman {
+    background: var(--dark);
+    border-top: 1px solid rgba(240,238,232,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  #realm-iceman::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(100,215,225,0.35) 40%, rgba(100,215,225,0.35) 60%, transparent 100%);
+  }
+  .ri-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 48px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+  .ri-cover {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    opacity: 0.9;
+    box-shadow: 0 0 40px rgba(0,200,255,0.15), 0 20px 40px rgba(0,0,0,0.6);
+    filter: saturate(0.9) brightness(0.95);
+  }
+  .ri-text { display: flex; flex-direction: column; gap: 14px; }
+  .ri-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(100,215,225,0.6);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ri-eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: rgba(100,215,225,0.4); }
+  .ri-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1;
+    color: #f0eee8;
+    letter-spacing: -0.02em;
+  }
+  .ri-ice {
+    color: #a8eeff;
+    text-shadow: 0 0 20px rgba(0,200,255,0.4);
+    animation: iceGlow 4s ease-in-out infinite;
+  }
+  @keyframes iceGlow {
+    0%, 100% { text-shadow: 0 0 20px rgba(0,200,255,0.35), 0 0 40px rgba(0,200,255,0.1); }
+    50%       { text-shadow: 0 0 40px rgba(0,200,255,0.6), 0 0 80px rgba(0,200,255,0.25); }
+  }
+  .ri-body {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: rgba(240,238,232,0.45);
+    max-width: 420px;
+  }
+  .ri-cta {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f0eee8;
+    text-decoration: none;
+    border: 1px solid rgba(240,238,232,0.25);
+    padding: 11px 24px;
+    border-radius: 2px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .ri-cta:hover { border-color: #a8eeff; color: #a8eeff; }
+  @media (max-width: 700px) {
+    .ri-inner { flex-direction: column; padding: 48px 24px; gap: 28px; text-align: center; }
+    .ri-eyebrow { justify-content: center; }
+    .ri-cta { align-self: center; }
+    .ri-body { margin: 0 auto; }
+  }
+
+  /* ─── UFO CANVAS ─── */
+  #ufo-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.55;
+  }
+  /* ensure all content sits above canvas */
+  nav, #hero, .ticker-wrap, .stats-bar, .full-bleed, section,
+  #arcade-section, #realm-iceman, .footer-bottom {
+    position: relative;
+    z-index: 2;
+  }
+  .footer-bottom {
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-bottom p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  @media (max-width: 900px) { .footer-bottom { padding: 20px 24px; justify-content: center; text-align: center; } }
+</style>
+</head>
+<body>
+<canvas id="ufo-canvas"></canvas>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/glitchrealm-logo-black.png" alt="GlitchRealm">
+    <span>GlitchRealm</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Tools</a></li>
+    <li><a href="#visualizer">Visualizer</a></li>
+    <li><a href="#store">Store</a></li>
+    <li><a href="#merch">Merch</a></li>
+    <li><a href="#updates">Updates</a></li>
+    <li><a href="#arcade">Arcade<span class="soon-tag">Soon</span></a></li>
+    <li><a href="https://instagram.com/glitchrealm" target="_blank">Socials</a></li>
+  </ul>
+  <div class="nav-ctas">
+    <a href="https://sledgren.github.io/chord-lab" class="btn-ghost" target="_blank">Chords</a>
+    <a href="https://sledgren.github.io/drumlab-" class="btn-ghost" target="_blank">Drum Lab</a>
+    <a href="https://glitchrealm.com/realmstore" class="btn-solid" target="_blank">Shop Now</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero" style="max-width:100%;">
+  <img src="images/glitchrealm-logo-black.png" alt="GlitchRealm Logo" class="hero-logo">
+  <p class="hero-tag">glitchrealm.com</p>
+  <h1 class="hero-h1">THE <em>SIGNAL</em><br>IS CLEAR.</h1>
+  <p class="hero-sub">Production tools built for musicians who operate on a different frequency. MIDI packs, sound kits, and free browser tools — the universe heard it first.</p>
+  <div class="hero-btns">
+    <a href="https://glitchrealm.com/realmstore" class="btn-primary" target="_blank">Browse the Store</a>
+    <a href="#visualizer" class="btn-secondary">See the MIDI Visualizer</a>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num">Free</span><span class="stat-label">Browser Tools</span></div>
+  <div class="stat"><span class="stat-num">13</span><span class="stat-label">Color Presets</span></div>
+  <div class="stat"><span class="stat-num">MPE</span><span class="stat-label">Ready</span></div>
+  <div class="stat"><span class="stat-num">808</span><span class="stat-label">Phonk Kits</span></div>
+</div>
+
+<!-- ═══════════════ TOOLS ═══════════════ -->
+<div class="full-bleed">
+<section id="features">
+  <p class="section-label">Free Tools · 2026</p>
+  <h2 class="section-h2">Three tools.<br><em>Zero</em> installs.</h2>
+
+  <div class="tools-grid">
+
+    <!-- Drum Lab -->
+    <div class="tool-card">
+      <span class="tool-card-num">Free Tool 03</span>
+      <div class="tool-preview">
+        <svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="160" fill="#06060a"/>
+          <text x="12" y="22" fill="#c8bfff" font-family="monospace" font-size="9" letter-spacing="2">GLITCHREALM · DRUM LAB v2</text>
+          <text x="12" y="38" fill="#555" font-family="monospace" font-size="8">BPM 140 ▶</text>
+          <text x="12" y="58" fill="#888" font-family="monospace" font-size="7">808 SUB</text>
+          <rect x="56" y="49" width="10" height="10" fill="#c8bfff" rx="1"/>
+          <rect x="69" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="82" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="95" y="49" width="10" height="10" fill="#c8bfff" rx="1"/>
+          <rect x="108" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="121" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="134" y="49" width="10" height="10" fill="#c8bfff" rx="1"/>
+          <rect x="147" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="160" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="173" y="49" width="10" height="10" fill="#c8bfff" rx="1"/>
+          <rect x="186" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="199" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="212" y="49" width="10" height="10" fill="#c8bfff" rx="1"/>
+          <rect x="225" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="238" y="49" width="10" height="10" fill="#c8bfff" rx="1"/>
+          <rect x="251" y="49" width="10" height="10" fill="#222" rx="1"/>
+          <text x="12" y="74" fill="#888" font-family="monospace" font-size="7">SNARE</text>
+          <rect x="56" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="69" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="82" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="95" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="108" y="65" width="10" height="10" fill="#d4a94a" rx="1"/>
+          <rect x="121" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="134" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="147" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="160" y="65" width="10" height="10" fill="#d4a94a" rx="1"/>
+          <rect x="173" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="186" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="199" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="212" y="65" width="10" height="10" fill="#d4a94a" rx="1"/>
+          <rect x="225" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <rect x="238" y="65" width="10" height="10" fill="#d4a94a" rx="1"/>
+          <rect x="251" y="65" width="10" height="10" fill="#222" rx="1"/>
+          <text x="12" y="90" fill="#888" font-family="monospace" font-size="7">HH CLO</text>
+          <rect x="56" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="69" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="82" y="81" width="10" height="10" fill="#555" rx="1"/>
+          <rect x="95" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="108" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="121" y="81" width="10" height="10" fill="#555" rx="1"/>
+          <rect x="134" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="147" y="81" width="10" height="10" fill="#555" rx="1"/>
+          <rect x="160" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="173" y="81" width="10" height="10" fill="#555" rx="1"/>
+          <rect x="186" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="199" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="212" y="81" width="10" height="10" fill="#555" rx="1"/>
+          <rect x="225" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <rect x="238" y="81" width="10" height="10" fill="#555" rx="1"/>
+          <rect x="251" y="81" width="10" height="10" fill="#444" rx="1"/>
+          <text x="12" y="110" fill="#c8bfff" font-family="monospace" font-size="7" letter-spacing="1">⚡ GLITCH FX</text>
+          <rect x="56" y="101" width="28" height="14" fill="#1a1a2e" rx="2" stroke="#c8bfff" stroke-width="0.5"/>
+          <text x="60" y="111" fill="#c8bfff" font-family="monospace" font-size="7">STUT</text>
+          <rect x="88" y="101" width="28" height="14" fill="#1a1a2e" rx="2" stroke="#333" stroke-width="0.5"/>
+          <text x="92" y="111" fill="#666" font-family="monospace" font-size="7">GATE</text>
+          <rect x="120" y="101" width="28" height="14" fill="#1a1a2e" rx="2" stroke="#333" stroke-width="0.5"/>
+          <text x="124" y="111" fill="#666" font-family="monospace" font-size="7">CRSH</text>
+          <rect x="152" y="101" width="28" height="14" fill="#1a1a2e" rx="2" stroke="#333" stroke-width="0.5"/>
+          <text x="156" y="111" fill="#666" font-family="monospace" font-size="7">RETR</text>
+          <polyline points="56,140 64,133 72,145 80,128 88,138 96,135 104,142 112,130 120,140 128,135 136,143 144,132 152,140 160,136 168,142 176,130 184,140 192,135" stroke="#c8bfff" stroke-width="1" fill="none" opacity="0.5"/>
+        </svg>
+      </div>
+      <h3 class="tool-name">Drum Pattern Lab</h3>
+      <p class="tool-desc">808 kits, phonk sounds, 64-step sequencer, swing, groove, glitch FX, 5-band EQ, and real WAV stem exports. Built for trap and phonk producers.</p>
+      <div class="tool-tags">
+        <span class="tag">808 Kits</span>
+        <span class="tag">Glitch FX</span>
+        <span class="tag">WAV Export</span>
+        <span class="tag">MIDI Export</span>
+        <span class="tag">Stem Export</span>
+      </div>
+      <a href="https://sledgren.github.io/drumlab-" class="tool-link" target="_blank">Launch Drum Lab →</a>
+    </div>
+
+    <!-- MIDI Visualizer -->
+    <div class="tool-card">
+      <span class="tool-card-num">Free Tool 01</span>
+      <div class="tool-preview">
+        <svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="bloom1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#c8bfff" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#c8bfff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="320" height="160" fill="#04040a"/>
+          <line x1="0" y1="32" x2="320" y2="32" stroke="#0e0e18" stroke-width="1"/>
+          <line x1="0" y1="64" x2="320" y2="64" stroke="#0e0e18" stroke-width="1"/>
+          <line x1="0" y1="96" x2="320" y2="96" stroke="#0e0e18" stroke-width="1"/>
+          <line x1="0" y1="128" x2="320" y2="128" stroke="#0e0e18" stroke-width="1"/>
+          <rect x="20" y="26" width="60" height="12" rx="2" fill="#c8bfff" opacity="0.9"/>
+          <rect x="20" y="26" width="60" height="12" rx="2" fill="url(#bloom1)" opacity="0.4"/>
+          <rect x="90" y="58" width="45" height="10" rx="2" fill="#7eb8ff" opacity="0.85"/>
+          <rect x="145" y="42" width="80" height="12" rx="2" fill="#ff9de2" opacity="0.8"/>
+          <rect x="235" y="26" width="50" height="12" rx="2" fill="#c8bfff" opacity="0.9"/>
+          <rect x="20" y="90" width="35" height="10" rx="2" fill="#6ee7b7" opacity="0.75"/>
+          <rect x="65" y="106" width="70" height="10" rx="2" fill="#d4a94a" opacity="0.8"/>
+          <rect x="145" y="90" width="45" height="10" rx="2" fill="#7eb8ff" opacity="0.75"/>
+          <rect x="200" y="74" width="35" height="12" rx="2" fill="#ff9de2" opacity="0.8"/>
+          <rect x="245" y="90" width="55" height="10" rx="2" fill="#c8bfff" opacity="0.7"/>
+          <rect x="20" y="122" width="90" height="10" rx="2" fill="#c8bfff" opacity="0.5"/>
+          <rect x="120" y="122" width="50" height="10" rx="2" fill="#7eb8ff" opacity="0.5"/>
+          <rect x="180" y="138" width="70" height="8" rx="2" fill="#6ee7b7" opacity="0.4"/>
+          <circle cx="80" cy="20" r="1.5" fill="#c8bfff" opacity="0.6"/>
+          <circle cx="160" cy="35" r="1" fill="#7eb8ff" opacity="0.5"/>
+          <circle cx="240" cy="15" r="1.5" fill="#ff9de2" opacity="0.5"/>
+          <circle cx="120" cy="50" r="1" fill="#c8bfff" opacity="0.4"/>
+          <circle cx="280" cy="40" r="2" fill="#d4a94a" opacity="0.4"/>
+          <text x="12" y="155" fill="#555" font-family="monospace" font-size="7" letter-spacing="2">AURORA ULTRA</text>
+        </svg>
+      </div>
+      <h3 class="tool-name">MIDI Visualizer</h3>
+      <p class="tool-desc">Drop your MIDI and audio. Watch every note render in real time with 13 color presets, depth perspective, bloom FX, ripple rings, and video export.</p>
+      <div class="tool-tags">
+        <span class="tag">13 Presets</span>
+        <span class="tag">3D Depth</span>
+        <span class="tag">Bloom FX</span>
+        <span class="tag">Video Export</span>
+      </div>
+      <a href="#visualizer" class="tool-link">Try it below →</a>
+    </div>
+
+    <!-- Chord Builder -->
+    <div class="tool-card">
+      <span class="tool-card-num">Free Tool 02</span>
+      <div class="tool-preview">
+        <svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="160" fill="#06060a"/>
+          <text x="12" y="20" fill="#888" font-family="monospace" font-size="8" letter-spacing="1">Cm9</text>
+          <text x="40" y="20" fill="#555" font-family="monospace" font-size="8">C · Eb · G · Bb · D</text>
+          <rect x="20" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="42" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="64" y="30" width="20" height="70" rx="1" fill="#c8bfff" stroke="#c8bfff" stroke-width="0.5" opacity="0.9"/>
+          <rect x="86" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="108" y="30" width="20" height="70" rx="1" fill="#c8bfff" stroke="#c8bfff" stroke-width="0.5" opacity="0.9"/>
+          <rect x="130" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="152" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="174" y="30" width="20" height="70" rx="1" fill="#c8bfff" stroke="#c8bfff" stroke-width="0.5" opacity="0.9"/>
+          <rect x="196" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="218" y="30" width="20" height="70" rx="1" fill="#c8bfff" stroke="#c8bfff" stroke-width="0.5" opacity="0.9"/>
+          <rect x="240" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="262" y="30" width="20" height="70" rx="1" fill="#e8e4d8" stroke="#333" stroke-width="0.5"/>
+          <rect x="34" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="56" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="100" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="122" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="144" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="188" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="210" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <rect x="254" y="30" width="14" height="44" rx="1" fill="#0a0a0a"/>
+          <text x="12" y="122" fill="#555" font-family="monospace" font-size="7" letter-spacing="1">PROGRESSION</text>
+          <rect x="12" y="128" width="50" height="20" rx="2" fill="#c8bfff" opacity="0.15" stroke="#c8bfff" stroke-width="0.5"/>
+          <text x="22" y="141" fill="#c8bfff" font-family="monospace" font-size="8">Cm9</text>
+          <rect x="68" y="128" width="50" height="20" rx="2" fill="#222" stroke="#333" stroke-width="0.5"/>
+          <text x="78" y="141" fill="#888" font-family="monospace" font-size="8">Fm7</text>
+          <rect x="124" y="128" width="50" height="20" rx="2" fill="#222" stroke="#333" stroke-width="0.5"/>
+          <text x="134" y="141" fill="#888" font-family="monospace" font-size="8">Bb7</text>
+          <rect x="180" y="128" width="50" height="20" rx="2" fill="#222" stroke="#333" stroke-width="0.5"/>
+          <text x="190" y="141" fill="#888" font-family="monospace" font-size="8">Ebmaj</text>
+        </svg>
+      </div>
+      <h3 class="tool-name">Chord Builder</h3>
+      <p class="tool-desc">Build and explore chord progressions visually. Find the right voicings, export MIDI, and never get stuck on chord theory again.</p>
+      <div class="tool-tags">
+        <span class="tag">MIDI Export</span>
+        <span class="tag">All Keys</span>
+        <span class="tag">Visual Piano</span>
+      </div>
+      <a href="https://sledgren.github.io/chord-lab" class="tool-link" target="_blank">Launch Chord Builder →</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════ MIDI VISUALIZER (live embed) ═══════════════ -->
+<div class="full-bleed panel">
+<section id="visualizer">
+  <p class="section-label" style="justify-content:center;">Live Demo</p>
+  <div class="viz-text">
+    <h2 class="section-h2">See your <em>MIDI</em> come alive.</h2>
+    <p>The MIDI Visualizer now runs live, right here on glitchrealm.com. Drop in a MIDI file, pick a colorway, and watch it render in real time.</p>
+  </div>
+  <div class="viz-card">
+    <iframe src="https://app.dozingwhale.net/vidi-studio/" title="GlitchRealm MIDI Visualizer" loading="lazy" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
+  </div>
+  <p class="viz-fallback">Visualizer not loading? <a href="https://app.dozingwhale.net/vidi-studio/" target="_blank">Open it directly in a new tab →</a></p>
+</section>
+</div>
+
+<!-- ═══════════════ STORE ═══════════════ -->
+<div class="full-bleed">
+<section id="store">
+  <p class="section-label">Store · Royalty Free</p>
+  <h2 class="section-h2">Premium sounds.<br><em>Zero</em> restrictions.</h2>
+
+  <!-- Realm × Iceman spotlight -->
+  <div class="iceman-spotlight">
+    <img src="images/realm-iceman-cover.jpg" alt="Realm × Iceman">
+    <div class="iceman-spotlight-text">
+      <span class="iceman-spotlight-name">Realm × Iceman · 2026</span>
+    </div>
+    <a href="https://glitchrealm.com/realmstore" class="iceman-spotlight-link" target="_blank">Get the sounds →</a>
+  </div>
+
+  <div class="store-grid">
+    <a href="https://www.glitchrealm.com/realmstore/p/glitcher-loop-pack-vol1-2026" class="product-card product-card--new" target="_blank">
+      <div class="product-img-wrap">
+        <img src="http://static1.squarespace.com/static/557f09b0e4b0cd2823cfc59d/56041b62e4b0e48c1be10302/6a0758ca85751c2e2fc253d7/1779493559165/ChatGPT+Image+May+15%2C+2026%2C+01_58_52+PM.png?format=800w" alt="Glitcher Loop Pack Vol.1" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <span class="new-badge">NEW</span>
+      </div>
+      <div class="product-info">
+        <span class="product-type">Loop Pack</span>
+        <span class="product-name">Glitcher Loop Pack Vol.1</span>
+        <span class="product-price">$9.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/midi-pack-by-sledgren-2026-royalty-free" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-midi-pack-sledgren-2026.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">MIDI Pack</span>
+        <span class="product-name">Midi Pack By Sledgren 2026</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/glide-loops-by-sledgren" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-glide-loops-sledgren.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sound Kit</span>
+        <span class="product-name">Glide Loops — by Sledgren</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/afzc9sqsjvf6qonya3kmxj9jf0qj7j" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-orchestral-scores-vol1-2026.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Orchestral</span>
+        <span class="product-name">Orchestral Scores Vol.1 2026</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/primal-rage-loops-by-sledgren-2026" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-primal-rage-loops-2026.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Loop Pack</span>
+        <span class="product-name">Primal Rage Loops 2026</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/sledgren-guitar-loops-vol-1-2026-15-brand-new-loops" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-guitar-loops-vol1-2026.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Loop Pack</span>
+        <span class="product-name">Guitar Loops Vol.1 2026</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/sledgren-lost-world-sample-pack" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-lost-world-sample-pack.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sample Pack</span>
+        <span class="product-name">Lost World Sample Pack</span>
+        <span class="product-price">$39.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/5cg2a6y359304yculjcgffvvnpt8o0" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-intergalactic-sample-pack.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sample Pack</span>
+        <span class="product-name">Intergalactic Sample Pack</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/glitchrealm-invaders-sample-pack-vol1" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-invaders-sample-pack-vol1.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sample Pack</span>
+        <span class="product-name">Invaders Sample Pack Vol.1</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/glitchrealm-invaders-sample-pack-vol2" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-invaders-sample-pack-vol2.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sample Pack</span>
+        <span class="product-name">Invaders Sample Pack Vol.2</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/sledgren-possessed" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-sledgren-possessed.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sample Pack</span>
+        <span class="product-name">Sledgren — Possessed</span>
+        <span class="product-price">$39.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/glitcher" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-glitcher-soundkit.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sound Kit</span>
+        <span class="product-name">Glitcher SoundKit</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+
+    <a href="https://www.glitchrealm.com/realmstore/p/glitchrealm-departure-sample-pack-2024" class="product-card" target="_blank">
+      <div class="product-img-wrap"><img src="images/product-departure-sample-pack-2024.jpg" alt=""></div>
+      <div class="product-info">
+        <span class="product-type">Sample Pack</span>
+        <span class="product-name">Departure Sample Pack 2024</span>
+        <span class="product-price">$19.99</span>
+      </div>
+    </a>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════ MERCH ═══════════════ -->
+<div class="full-bleed panel">
+<section id="merch">
+  <p class="section-label">Merch · New</p>
+  <h2 class="section-h2">Wear the <em>frequency.</em></h2>
+
+  <div class="merch-grid">
+    <div class="product-card">
+      <div class="merch-placeholder"><span class="merch-icon">GlitchRealm<br>Logo Hoodie</span></div>
+      <div class="product-info">
+        <span class="product-type">Apparel</span>
+        <span class="product-name">GlitchRealm Logo Fleeced Full-Zip Boxy Hoodie</span>
+        <span class="product-price soon">Image pending</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="merch-placeholder"><span class="merch-icon">French Terry<br>Raw Edge Tee</span></div>
+      <div class="product-info">
+        <span class="product-type">Apparel</span>
+        <span class="product-name">French Terry Raw Edge T-Shirt</span>
+        <span class="product-price soon">Image pending</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="merch-placeholder"><span class="merch-icon">French Terry<br>Raw Edge Tee (2)</span></div>
+      <div class="product-info">
+        <span class="product-type">Apparel</span>
+        <span class="product-name">French Terry Raw Edge T-Shirt (2)</span>
+        <span class="product-price soon">Image pending</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="merch-placeholder"><span class="merch-icon">Flared<br>Sweatpants</span></div>
+      <div class="product-info">
+        <span class="product-type">Apparel</span>
+        <span class="product-name">Flared Sweatpants</span>
+        <span class="product-price soon">Image pending</span>
+      </div>
+    </div>
+  </div>
+  <p class="merch-note">Send over the product photos for these four and I'll wire them straight into the cards above.</p>
+</section>
+</div>
+
+<!-- ═══════════════ CHANGELOG ═══════════════ -->
+<div class="full-bleed">
+<section id="updates">
+  <p class="section-label">Changelog · v7 · 2026</p>
+  <h2 class="section-h2">What just got <em>better.</em></h2>
+
+  <div class="changelog-grid">
+    <div class="changelog-item">
+      <p class="cl-tag">Sync</p>
+      <h3 class="cl-title">Audio / MIDI Timing</h3>
+      <p class="cl-desc">Direct clock sync — same formula a DAW uses. No drift, no ratio math, no padding bugs. Closest to perfect we've been.</p>
+    </div>
+    <div class="changelog-item">
+      <p class="cl-tag">Depth</p>
+      <h3 class="cl-title">3D Perspective System</h3>
+      <p class="cl-desc">Full pitch grid compression toward the horizon. The whole arrangement converges — dual-axis creates a real tunnel effect.</p>
+    </div>
+    <div class="changelog-item">
+      <p class="cl-tag">Visual</p>
+      <h3 class="cl-title">Note Rendering</h3>
+      <p class="cl-desc">5-layer note rendering — halo, body gradient, center highlight line, depth scale, inactive fade. Every note lit from within.</p>
+    </div>
+    <div class="changelog-item">
+      <p class="cl-tag">Presets</p>
+      <h3 class="cl-title">13 Full Colorways</h3>
+      <p class="cl-desc">Aurora Ultra, Miami Vice, Neochrome, Cold Glass and 9 more. Background, bloom, particles, and all track colors in one click.</p>
+    </div>
+    <div class="changelog-item">
+      <p class="cl-tag">FX</p>
+      <h3 class="cl-title">Particles & Bloom</h3>
+      <p class="cl-desc">Stars animate from page open. Bloom, count, size, speed, color all independent. Ripple rings pulse on every active note.</p>
+    </div>
+    <div class="changelog-item">
+      <p class="cl-tag">Export</p>
+      <h3 class="cl-title">Video Bounce</h3>
+      <p class="cl-desc">Full-screen bounce overlay with live preview and progress bar. WebM output — Chrome, Firefox, Android, Windows.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════ ARCADE + ORBS (merged, compact, closed) ═══════════════ -->
+<div id="arcade-section">
+  <div class="arcade-inner" id="arcade">
+    <div class="arcade-img-col">
+      <div class="arcade-img-wrap">
+        <img src="images/arcade-teaser-orbs.jpg" alt="ORBS — The Adventure">
+        <div class="arcade-badge"><span class="arcade-dot"></span>Doors Closed</div>
+      </div>
+    </div>
+    <div class="arcade-text-col">
+      <p class="arcade-eyebrow">GlitchRealm Arcade · Loading Stage 01</p>
+      <h2 class="arcade-title">INSERT <em>COIN.</em><br>ORBS: The Adventure</h2>
+      <p class="arcade-sub">A dedicated space for independent games and classic titles, playable directly in your browser. ORBS — a pixel RPG built in the Realm — leads the lineup, with an original score from GlitchRealm. The arcade is still closed for now, but the cabinets are warming up.</p>
+      <div class="arcade-tags">
+        <span class="arcade-tag">Browser Playable</span>
+        <span class="arcade-tag">Controller Support</span>
+        <span class="arcade-tag arcade-tag--soon">Arcade · Coming 2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REALM X ICEMAN -->
+<div id="realm-iceman">
+  <div class="ri-inner">
+    <img class="ri-cover" src="images/realm-iceman-cover.jpg" alt="Iceman">
+    <div class="ri-text">
+      <span class="ri-eyebrow">Realm × Iceman · 2026</span>
+      <h2 class="ri-headline">Transmitting from a different frequency.</h2>
+      <a href="https://glitchrealm.com/realmstore" class="ri-cta" target="_blank">Get the sounds →</a>
+    </div>
+  </div>
+</div>
+<div class="footer-bottom">
+  <p>© 2026 GlitchRealm / Sledgren. All rights reserved.</p>
+  <p>Transmitting from a different frequency.</p>
+</div>
+
+<script>
+// ═══════════════ TICKER ═══════════════
+(function() {
+  const items = ['Drum Pattern Lab','MIDI Visualizer','MPE Instruments','Chord Builder','Glide Loops','Orchestral Scores','Royalty Free','Merch Drop','Aurora Ultra'];
+  const track = document.getElementById('ticker');
+  let html = '';
+  for (let rep = 0; rep < 2; rep++) {
+    items.forEach(item => {
+      html += `<span class="ticker-item"><span>·</span>${item}</span>`;
+    });
+  }
+  track.innerHTML = html;
+})();
+</script>
+
+<script>
+// ═══════════════ UFO BACKGROUND ═══════════════
+(function() {
+  const canvas = document.getElementById('ufo-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Draw a little hand-drawn style UFO at (x,y), scale s, tilt angle a
+  function drawUFO(x, y, s, alpha, beamOn) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.globalAlpha = alpha;
+
+    // Subtle wobble tilt handled by caller via rotation
+    // Body (saucer dome)
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 18 * s, 7 * s, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(120, 200, 230, 0.18)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(100, 210, 235, 0.75)';
+    ctx.lineWidth = 1.2 * s;
+    ctx.stroke();
+
+    // Dome top
+    ctx.beginPath();
+    ctx.ellipse(0, -4 * s, 9 * s, 6 * s, 0, Math.PI, 0);
+    ctx.fillStyle = 'rgba(160, 230, 255, 0.12)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(140, 220, 255, 0.7)';
+    ctx.lineWidth = 1 * s;
+    ctx.stroke();
+
+    // Windows (3 little circles on the rim)
+    [-7, 0, 7].forEach(wx => {
+      ctx.beginPath();
+      ctx.arc(wx * s, 0, 1.8 * s, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(200, 240, 255, 0.6)';
+      ctx.fill();
+    });
+
+    // Rim detail line
+    ctx.beginPath();
+    ctx.ellipse(0, 2 * s, 18 * s, 3 * s, 0, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(100, 210, 235, 0.3)';
+    ctx.lineWidth = 0.8 * s;
+    ctx.stroke();
+
+    // Beam (optional, pulsing)
+    if (beamOn) {
+      const bGrad = ctx.createLinearGradient(0, 4 * s, 0, 28 * s);
+      bGrad.addColorStop(0, 'rgba(160,230,255,0.28)');
+      bGrad.addColorStop(1, 'rgba(160,230,255,0)');
+      ctx.beginPath();
+      ctx.moveTo(-5 * s, 4 * s);
+      ctx.lineTo(-10 * s, 28 * s);
+      ctx.lineTo(10 * s, 28 * s);
+      ctx.lineTo(5 * s, 4 * s);
+      ctx.closePath();
+      ctx.fillStyle = bGrad;
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  // Spawn UFOs
+  const NUM = 7;
+  const ufos = [];
+
+  for (let i = 0; i < NUM; i++) {
+    ufos.push(spawnUFO(true));
+  }
+
+  function spawnUFO(randomY) {
+    const speed = 0.25 + Math.random() * 0.5;
+    const scale = 0.5 + Math.random() * 0.8;
+    const dir = Math.random() < 0.5 ? 1 : -1;
+    return {
+      x: dir === 1 ? -60 : W + 60,
+      y: randomY ? Math.random() * H * 0.85 : Math.random() * H * 0.85,
+      vx: speed * dir,
+      vy: (Math.random() - 0.5) * 0.15,
+      scale,
+      dir,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: 0.012 + Math.random() * 0.01,
+      beamTimer: Math.random() * 200,
+      beamDuration: 60 + Math.random() * 80,
+      beamInterval: 180 + Math.random() * 300,
+      alpha: 0.35 + Math.random() * 0.45,
+    };
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    ufos.forEach((u, i) => {
+      u.wobble += u.wobbleSpeed;
+      u.x += u.vx;
+      u.y += Math.sin(u.wobble) * 0.4;
+      u.beamTimer++;
+
+      const beamOn = u.beamTimer % u.beamInterval < u.beamDuration;
+
+      ctx.save();
+      ctx.translate(u.x, u.y);
+      ctx.rotate(Math.sin(u.wobble * 0.5) * 0.08);
+      drawUFO(0, 0, u.scale, u.alpha, beamOn);
+      ctx.restore();
+
+      // Respawn when off screen
+      if ((u.dir === 1 && u.x > W + 80) || (u.dir === -1 && u.x < -80)) {
+        ufos[i] = spawnUFO(false);
+        ufos[i].x = ufos[i].dir === 1 ? -60 : W + 60;
+      }
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  tick();
+})();
+</script>
+
+</body>
+</html>
