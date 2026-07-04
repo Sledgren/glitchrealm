@@ -1,0 +1,1080 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" id="sd-viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Vue mobile « zoom-to-fit » : sur appareil tactile à écran étroit, on
+     garde la VRAIE machine (index.html) mais on cale le viewport sur la
+     largeur naturelle de l'app (720px) → toute la machine se réduit pour
+     tenir à l'écran, rendu identique au desktop. Le pincer-pour-zoomer reste
+     possible (faders/knobs fins). ?desktop=1 ou le flag sessionStorage
+     forcent le rendu natif device-width. Exécuté avant le CSS/JS lourd. -->
+<script>
+(function () {
+  try {
+    var params = new URLSearchParams(location.search);
+    if (params.has('desktop') || sessionStorage.getItem('sd_force_desktop')) return;
+    var coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    var narrow = Math.min(window.innerWidth || 9999, (window.screen && window.screen.width) || 9999) <= 760;
+    if (coarse && narrow) {
+      var vp = document.getElementById('sd-viewport');
+      if (vp) vp.setAttribute('content', 'width=720');
+    }
+  } catch (e) {}
+})();
+</script>
+<title>GR4600 — Online shuffle groovebox &amp; Sampler</title>
+<meta name="description" content="Make beats in your browser — free online drum machine with shuffle groove, sampler, lo-fi FX and WAV export. No download, no login.">
+<meta name="keywords" content="groovebox, drum machine, online drum machine, beat maker, step sequencer, sampler, shuffle, swing, lo-fi, drum kits, web audio, gr-16, rhythm machine, create a beat">
+<meta name="author" content="Mani Deïz">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#ff7a1a">
+<meta name="application-name" content="GR4600">
+<meta name="apple-mobile-web-app-title" content="GR4600">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="canonical" href="https://shuffledrummer.com/">
+
+<!-- English page -->
+<link rel="alternate" hreflang="en" href="https://shuffledrummer.com/">
+<link rel="alternate" hreflang="x-default" href="https://shuffledrummer.com/">
+
+<!-- Open Graph (Facebook, LinkedIn, Discord, WhatsApp…) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GR4600">
+<meta property="og:url" content="https://shuffledrummer.com/">
+<meta property="og:title" content="GR4600 — Online shuffle groovebox &amp; Sampler">
+<meta property="og:description" content="Make beats in your browser — free online drum machine with shuffle groove, sampler, lo-fi FX and WAV export. No download, no login.">
+<meta property="og:image" content="https://shuffledrummer.com/assets/og-cover.png">
+<meta property="og:image:secure_url" content="https://shuffledrummer.com/assets/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="GR4600 — online groovebox and drum machine">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GR4600 — Online shuffle groovebox &amp; Sampler">
+<meta name="twitter:description" content="Make beats in your browser — free online drum machine with shuffle groove, sampler, lo-fi FX and WAV export. No download, no login.">
+<meta name="twitter:image" content="https://shuffledrummer.com/assets/og-cover.png">
+<meta name="twitter:image:alt" content="GR4600 — online groovebox and drum machine">
+
+<link rel="manifest" href="site.webmanifest">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+
+<!-- Données structurées (Google rich results / knowledge) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://shuffledrummer.com/#website",
+      "url": "https://shuffledrummer.com/",
+      "name": "GR4600",
+      "description": "Online groovebox and drum machine.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": ["WebApplication", "SoftwareApplication"],
+      "@id": "https://shuffledrummer.com/#app",
+      "name": "GR4600",
+      "url": "https://shuffledrummer.com/",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires a modern browser with Web Audio API support.",
+      "inLanguage": "en",
+      "description": "Free browser groovebox and drum machine built entirely on the Web Audio API: shuffle/swing groove engine, step sequencer, sampler with slicing, drum kits, lo-fi and vintage FX, per-track mixer/EQ/compression, bass keyboard and WAV export. No download, no plugin.",
+      "image": "https://shuffledrummer.com/assets/og-cover.png",
+      "screenshot": "https://shuffledrummer.com/assets/og-cover.png",
+      "keywords": "groovebox, drum machine, online drum machine, step sequencer, sampler, shuffle, swing, lo-fi, beat maker",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
+      },
+      "featureList": [
+        "Shuffle & swing groove engine",
+        "16-step / multi-bar sequencer",
+        "Web Audio drum synthesis",
+        "Sampler with slicing and pitch",
+        "Drum kits (DRUMS BANK)",
+        "Lo-fi, vintage and bitcrush FX",
+        "Per-track mixer, EQ and compression",
+        "Bass keyboard / live play",
+        "WAV export (stems, master, live recording)",
+        "Shareable patterns via URL"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Mani Deïz"
+      }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/variables.css?v=4619">
+<link rel="stylesheet" href="styles/machine.css?v=4619">
+<link rel="stylesheet" href="styles/controls.css?v=4619">
+<link rel="stylesheet" href="styles/sequencer.css?v=4619">
+<link rel="stylesheet" href="styles/sampler.css?v=4619">
+<link rel="stylesheet" href="styles/fx.css?v=4619">
+<link rel="stylesheet" href="styles/pads.css?v=4619">
+<link rel="stylesheet" href="styles/pattern.css?v=4619">
+<link rel="stylesheet" href="styles/xp-gauge.css?v=4619">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="8daaaffa-5bd0-458c-8078-4c5df6e9ee47"></script>
+</head>
+<body>
+
+<div class="machine">
+  <div class="edge">
+    <span class="edge-title"><span class="realm-model-title"><span class="realm-model-main">GR4600</span><span class="realm-model-sub">DRUM MACHINE</span></span><img src="assets/glitchrealm-logo.webp" class="edge-brand-logo realm-logo" id="glitchrealm-logo" alt="Glitchrealm logo" onclick="openGlitchrealmPopup()" style="cursor:pointer;"></span>
+    <span style="display:flex;align-items:center;gap:8px;transform:translateY(7px);">
+      <span style="display:flex;align-items:center;gap:4px;">
+        <button class="midi-edge-btn" id="midi-edge-btn" title="Enable MIDI input — click to connect">◎ MIDI</button>
+        <button class="midi-edge-btn" id="new-project-btn" title="Create a blank GR4600 project">＋ NEW</button>
+        <button class="help-btn" id="help-btn" onclick="this.classList.add('used');toggleLearnMode()" title="Tutorial mode">HELP ?</button>
+      </span>
+      <div style="position:relative;" onwheel="onVolWheel(event)">
+        <button class="vol-btn" id="vol-btn" title="Volume master" onclick="toggleVolPopup()">VOL+</button>
+        <div class="vol-popup" id="vol-popup">
+          <div class="vol-popup-label">MASTER VOL</div>
+          <input type="range" id="vol-slider" min="0" max="127" value="100" oninput="onVolSlider(this.value)">
+          <div class="vol-popup-val" id="vol-popup-val">100</div>
+        </div>
+      </div>
+    </span>
+  </div>
+
+  <div class="top">
+    <!-- Screen col -->
+    <div class="screen-col">
+      <div class="screen" id="screen" onclick="runDiag()">
+        <div class="screen-bpm" id="scr-bpm" title="Drag ↕ to adjust · Double-click to type a value">BPM:140</div>
+        <div class="screen-status" id="scr-status">STOP</div>
+        <div class="screen-meta" id="scr-meta">SW 58% · FDR VOL · SND RUN</div>
+        <div id="scr-sample" style="color:#6a9a6a;font-size:9px;margin-top:4px;letter-spacing:0.08em;min-height:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;"></div>
+        <div id="scr-seq" style="color:#5a8a9a;font-size:9px;margin-top:4px;letter-spacing:0.08em;min-height:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">SEQ · 0/16 ON · 0 ASSIGNMENTS</div>
+        <div id="scr-pattern" style="color:#fb8c00;font-size:9px;margin-top:4px;letter-spacing:0.08em;min-height:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:none;"></div>
+        <div id="scr-pad" style="color:#8a6aaa;font-size:9px;margin-top:4px;letter-spacing:0.08em;min-height:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">STEP 16 · OFF · FREE</div>
+      </div>
+    </div>
+
+    <!-- Wheel col -->
+    <div class="wheel-col">
+      <div class="wheel-outer" id="wheel" onclick="stepPatternAndReset(1)" oncontextmenu="showWheelMenu(event)">
+        <div class="wheel-ring"><div class="wheel-notch"></div></div>
+        <div class="wheel-center">
+          <div class="ptn-num" id="ptn-num">01</div>
+          <div class="ptn-name" id="ptn-name">BOOM BAP 1</div>
+        </div>
+      </div>
+      <div class="wheel-label">SHUFFLE</div>
+      <div class="transport-row">
+        <button class="trn-btn trn-rec" id="rec-btn" title="Arm recording · Right-click: metronome volume" onclick="toggleRec()" oncontextmenu="showMetroVolumePopup(event)">REC</button>
+        <button class="trn-btn trn-stop" id="stop-btn" title="Stop · Double-click: stop all" onclick="handleStopClick()" ondblclick="stopAll()">■</button>
+        <button class="trn-btn trn-play" id="play-btn" onclick="togglePlay()">▶</button>
+      </div>
+    </div>
+
+    <!-- FX col + Global Pitch fader -->
+    <div style="display:flex;flex-direction:row;align-items:center;justify-content:flex-end;">
+    <div class="fx-col">
+      <div class="knob-pair">
+        <div class="knob-wrap">
+          <div class="knob-body" data-knob="vintage" data-min="0" data-max="100" data-val="0"><div class="knob-rotor" style="transform: rotate(-135deg);"><div class="knob-mark"></div></div></div>
+          <div class="knob-label" style="cursor:pointer;" title="Double-click: vintage shuffle · Right-click: load vinyl samples" id="vintage-label">VINTAGE</div>
+          <div class="knob-value" id="knob-vintage-val">OFF</div>
+        </div>
+        <div class="knob-wrap">
+          <div class="knob-body" data-knob="swing" data-min="50" data-max="75" data-val="50"><div class="knob-rotor" style="transform: rotate(-135deg);"><div class="knob-mark"></div></div></div>
+          <div class="knob-label">SWING</div>
+          <div class="knob-value" id="knob-swing-val">50%</div>
+        </div>
+      </div>
+      <div class="knob-pair">
+        <div class="knob-wrap">
+          <div class="knob-body" data-knob="drumcrush" data-min="0" data-max="100" data-val="0"><div class="knob-rotor" style="transform: rotate(-135deg);"><div class="knob-mark"></div></div></div>
+          <div class="knob-label">CRUSH</div>
+          <div class="knob-value" id="knob-drumcrush-val">OFF</div>
+        </div>
+        <div class="knob-wrap">
+          <div class="knob-body" data-knob="filter" data-min="0" data-max="100" data-val="0"><div class="knob-rotor" style="transform: rotate(0deg);"><div class="knob-mark"></div></div></div>
+          <div class="knob-label">FILTER</div>
+          <div class="knob-value" id="knob-filter-val">FLAT</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Pitch fader — permanent, right of the 4 FX knobs -->
+    <div class="gpitch-col" id="gpitch-col" title="MASTER PITCH · Drag ↕ · Double-click: reset to 0">
+      <div class="gpitch-inner">
+        <div class="gpitch-scale">
+          <span>+12</span>
+          <span>+6</span>
+          <span>0</span>
+          <span>−6</span>
+          <span>−12</span>
+        </div>
+        <div class="gpitch-track" id="gpitch-track">
+          <div class="gpitch-slot"></div>
+          <div class="gpitch-zero"></div>
+          <div class="gpitch-tick" style="top:0%"></div>
+          <div class="gpitch-tick" style="top:25%"></div>
+          <div class="gpitch-tick" style="top:50%"></div>
+          <div class="gpitch-tick" style="top:75%"></div>
+          <div class="gpitch-tick" style="top:calc(100% - 1px)"></div>
+          <div class="gpitch-thumb" id="gpitch-thumb"></div>
+        </div>
+      </div>
+      <div class="gpitch-label">MASTER PITCH</div>
+      <div class="gpitch-val" id="gpitch-val">0 ST</div>
+    </div>
+    </div><!-- /fx+gpitch wrapper -->
+  </div><!-- /top -->
+
+  <!-- PITCH row — entre le bloc shuffle et les faders -->
+  <div style="display:flex; justify-content:center; align-items:center; gap:6px; margin:8px 0 8px; padding:0 2px;">
+    <button class="pitch-btn" id="drumbank-btn" title="Load your own drum samples" style="background:linear-gradient(180deg,var(--accent-bright),var(--accent));color:#1a0d00;border-color:var(--accent-light);font-weight:900;box-shadow:0 2px 0 var(--btn-shadow),0 0 10px var(--accent-glow-40);">LOAD DRUMS</button>
+    <button class="pitch-btn crush-btn" id="crush-btn" onclick="toggleDrumCrush()" oncontextmenu="toggleDrumCrushPlus(event)" title="Drum bitcrusher · Click → 12 BITS (vintage lo-fi)">12 BITS</button>
+    <div style="position:relative;">
+      <button class="pitch-btn" id="pitch-btn" onclick="toggleFaderMode()" title="Click → pitch faders">PITCH</button>
+    </div>
+    <button class="pitch-btn filter-btn" id="hipass-btn" onclick="toggleFilterMode('hipass')" title="Faders → per-track high-pass filter">HI-PASS</button>
+    <button class="pitch-btn filter-btn" id="lowpass-btn" onclick="toggleFilterMode('lowpass')" title="Faders → per-track low-pass filter">LOW-PASS</button>
+    <button id="beat-card-btn" onclick="openBeatCard()" title="Share this beat" style="margin-left:auto;padding:3px 10px;font-size:11px;letter-spacing:0.12em;font-weight:700;font-family:inherit;cursor:pointer;border-radius:3px;background:#2e1260;border:1px solid #5030a0;color:#ffaa44;box-shadow:none;transition:all 0.12s;">SHARE BEAT</button>
+    <button class="pitch-btn" id="undo-btn" onclick="undoDrums()" title="Undo drums/shuffle/markers · 50 levels" disabled="" style="margin-left:0;">↩ UNDO</button>
+    <button class="pitch-btn rec-live-btn" id="rec-live-btn" onclick="toggleRecLive()" style="margin-left:0;" title="Live recording of the full mix (mute/solo/FX in real time) → .wav file. Click → choose folder and arm · PLAY → count-in then record · STOP → export.">REC LIVE</button>
+  </div>
+
+  <!-- Mixer -->
+  <!-- Static mixer stays visible for direct file:// previews; JS upgrades it to the full 8-channel mixer when modules load. -->
+  <div class="mixer" id="mixer"><div class="channel"><div class="fader-track" id="fader-kick"><div class="fader-slot"></div><div class="fader-grad major" style="bottom: 0%;"></div><div class="fader-grad" style="bottom: 4.16667%;"></div><div class="fader-grad major" style="bottom: 8.33333%;"></div><div class="fader-grad" style="bottom: 12.5%;"></div><div class="fader-grad major" style="bottom: 16.6667%;"></div><div class="fader-grad" style="bottom: 20.8333%;"></div><div class="fader-grad major" style="bottom: 25%;"></div><div class="fader-grad" style="bottom: 29.1667%;"></div><div class="fader-grad major" style="bottom: 33.3333%;"></div><div class="fader-grad" style="bottom: 37.5%;"></div><div class="fader-grad major" style="bottom: 41.6667%;"></div><div class="fader-grad" style="bottom: 45.8333%;"></div><div class="fader-grad major" style="bottom: 50%;"></div><div class="fader-grad" style="bottom: 54.1667%;"></div><div class="fader-grad major" style="bottom: 58.3333%;"></div><div class="fader-grad" style="bottom: 62.5%;"></div><div class="fader-grad major" style="bottom: 66.6667%;"></div><div class="fader-grad" style="bottom: 70.8333%;"></div><div class="fader-grad major" style="bottom: 75%;"></div><div class="fader-grad" style="bottom: 79.1667%;"></div><div class="fader-grad major" style="bottom: 83.3333%;"></div><div class="fader-grad" style="bottom: 87.5%;"></div><div class="fader-grad major" style="bottom: 91.6667%;"></div><div class="fader-grad" style="bottom: 95.8333%;"></div><div class="fader-grad major" style="bottom: 100%;"></div><div class="fader-zero"></div><div class="fader-tick"></div><div class="fader-thumb" id="fthumb-kick" style="bottom: calc(92% - 10px); overflow: hidden;"><canvas class="fader-env-canvas" width="34" height="18"></canvas><div class="fader-corner atk"><div class="fader-corner-dot"></div></div><div class="fader-corner dcy"><div class="fader-corner-dot"></div></div></div></div><button class="drum-btn" id="drum-kick"><span class="led" id="led-kick" style="background: rgb(255, 122, 26); box-shadow: rgb(255, 122, 26) 0px 0px 6px;"></span>K</button><div class="drum-name" id="dname-kick">BOOM</div></div><div class="channel"><div class="fader-track" id="fader-snare"><div class="fader-slot"></div><div class="fader-grad major" style="bottom: 0%;"></div><div class="fader-grad" style="bottom: 4.16667%;"></div><div class="fader-grad major" style="bottom: 8.33333%;"></div><div class="fader-grad" style="bottom: 12.5%;"></div><div class="fader-grad major" style="bottom: 16.6667%;"></div><div class="fader-grad" style="bottom: 20.8333%;"></div><div class="fader-grad major" style="bottom: 25%;"></div><div class="fader-grad" style="bottom: 29.1667%;"></div><div class="fader-grad major" style="bottom: 33.3333%;"></div><div class="fader-grad" style="bottom: 37.5%;"></div><div class="fader-grad major" style="bottom: 41.6667%;"></div><div class="fader-grad" style="bottom: 45.8333%;"></div><div class="fader-grad major" style="bottom: 50%;"></div><div class="fader-grad" style="bottom: 54.1667%;"></div><div class="fader-grad major" style="bottom: 58.3333%;"></div><div class="fader-grad" style="bottom: 62.5%;"></div><div class="fader-grad major" style="bottom: 66.6667%;"></div><div class="fader-grad" style="bottom: 70.8333%;"></div><div class="fader-grad major" style="bottom: 75%;"></div><div class="fader-grad" style="bottom: 79.1667%;"></div><div class="fader-grad major" style="bottom: 83.3333%;"></div><div class="fader-grad" style="bottom: 87.5%;"></div><div class="fader-grad major" style="bottom: 91.6667%;"></div><div class="fader-grad" style="bottom: 95.8333%;"></div><div class="fader-grad major" style="bottom: 100%;"></div><div class="fader-zero"></div><div class="fader-tick"></div><div class="fader-thumb" id="fthumb-snare" style="bottom: calc(85% - 10px); overflow: hidden;"><canvas class="fader-env-canvas" width="34" height="18"></canvas><div class="fader-corner atk"><div class="fader-corner-dot"></div></div><div class="fader-corner dcy"><div class="fader-corner-dot"></div></div></div></div><button class="drum-btn" id="drum-snare"><span class="led" id="led-snare" style="background: rgb(255, 80, 64); box-shadow: rgb(255, 80, 64) 0px 0px 6px;"></span>S</button><div class="drum-name" id="dname-snare">CRACK</div></div><div class="channel"><div class="fader-track" id="fader-hat"><div class="fader-slot"></div><div class="fader-grad major" style="bottom: 0%;"></div><div class="fader-grad" style="bottom: 4.16667%;"></div><div class="fader-grad major" style="bottom: 8.33333%;"></div><div class="fader-grad" style="bottom: 12.5%;"></div><div class="fader-grad major" style="bottom: 16.6667%;"></div><div class="fader-grad" style="bottom: 20.8333%;"></div><div class="fader-grad major" style="bottom: 25%;"></div><div class="fader-grad" style="bottom: 29.1667%;"></div><div class="fader-grad major" style="bottom: 33.3333%;"></div><div class="fader-grad" style="bottom: 37.5%;"></div><div class="fader-grad major" style="bottom: 41.6667%;"></div><div class="fader-grad" style="bottom: 45.8333%;"></div><div class="fader-grad major" style="bottom: 50%;"></div><div class="fader-grad" style="bottom: 54.1667%;"></div><div class="fader-grad major" style="bottom: 58.3333%;"></div><div class="fader-grad" style="bottom: 62.5%;"></div><div class="fader-grad major" style="bottom: 66.6667%;"></div><div class="fader-grad" style="bottom: 70.8333%;"></div><div class="fader-grad major" style="bottom: 75%;"></div><div class="fader-grad" style="bottom: 79.1667%;"></div><div class="fader-grad major" style="bottom: 83.3333%;"></div><div class="fader-grad" style="bottom: 87.5%;"></div><div class="fader-grad major" style="bottom: 91.6667%;"></div><div class="fader-grad" style="bottom: 95.8333%;"></div><div class="fader-grad major" style="bottom: 100%;"></div><div class="fader-zero"></div><div class="fader-tick"></div><div class="fader-thumb" id="fthumb-hat" style="bottom: calc(60% - 10px); overflow: hidden;"><canvas class="fader-env-canvas" width="34" height="18"></canvas><div class="fader-corner atk"><div class="fader-corner-dot"></div></div><div class="fader-corner dcy"><div class="fader-corner-dot"></div></div></div></div><button class="drum-btn" id="drum-hat"><span class="led" id="led-hat" style="background: rgb(255, 210, 77); box-shadow: rgb(255, 210, 77) 0px 0px 6px;"></span>H</button><div class="drum-name" id="dname-hat">CRISP</div></div><div class="channel"><div class="fader-track" id="fader-open"><div class="fader-slot"></div><div class="fader-grad major" style="bottom: 0%;"></div><div class="fader-grad" style="bottom: 4.16667%;"></div><div class="fader-grad major" style="bottom: 8.33333%;"></div><div class="fader-grad" style="bottom: 12.5%;"></div><div class="fader-grad major" style="bottom: 16.6667%;"></div><div class="fader-grad" style="bottom: 20.8333%;"></div><div class="fader-grad major" style="bottom: 25%;"></div><div class="fader-grad" style="bottom: 29.1667%;"></div><div class="fader-grad major" style="bottom: 33.3333%;"></div><div class="fader-grad" style="bottom: 37.5%;"></div><div class="fader-grad major" style="bottom: 41.6667%;"></div><div class="fader-grad" style="bottom: 45.8333%;"></div><div class="fader-grad major" style="bottom: 50%;"></div><div class="fader-grad" style="bottom: 54.1667%;"></div><div class="fader-grad major" style="bottom: 58.3333%;"></div><div class="fader-grad" style="bottom: 62.5%;"></div><div class="fader-grad major" style="bottom: 66.6667%;"></div><div class="fader-grad" style="bottom: 70.8333%;"></div><div class="fader-grad major" style="bottom: 75%;"></div><div class="fader-grad" style="bottom: 79.1667%;"></div><div class="fader-grad major" style="bottom: 83.3333%;"></div><div class="fader-grad" style="bottom: 87.5%;"></div><div class="fader-grad major" style="bottom: 91.6667%;"></div><div class="fader-grad" style="bottom: 95.8333%;"></div><div class="fader-grad major" style="bottom: 100%;"></div><div class="fader-zero"></div><div class="fader-tick"></div><div class="fader-thumb" id="fthumb-open" style="bottom: calc(55% - 10px); overflow: hidden;"><canvas class="fader-env-canvas" width="34" height="18"></canvas><div class="fader-corner atk"><div class="fader-corner-dot"></div></div><div class="fader-corner dcy"><div class="fader-corner-dot"></div></div></div></div><button class="drum-btn" id="drum-open"><span class="led" id="led-open" style="background: rgb(255, 170, 51); box-shadow: rgb(255, 170, 51) 0px 0px 6px;"></span>O</button><div class="drum-name" id="dname-open">CLASSIC</div></div><div class="channel"><div class="fader-track" id="fader-cymbal"><div class="fader-slot"></div><div class="fader-grad major" style="bottom: 0%;"></div><div class="fader-grad" style="bottom: 4.16667%;"></div><div class="fader-grad major" style="bottom: 8.33333%;"></div><div class="fader-grad" style="bottom: 12.5%;"></div><div class="fader-grad major" style="bottom: 16.6667%;"></div><div class="fader-grad" style="bottom: 20.8333%;"></div><div class="fader-grad major" style="bottom: 25%;"></div><div class="fader-grad" style="bottom: 29.1667%;"></div><div class="fader-grad major" style="bottom: 33.3333%;"></div><div class="fader-grad" style="bottom: 37.5%;"></div><div class="fader-grad major" style="bottom: 41.6667%;"></div><div class="fader-grad" style="bottom: 45.8333%;"></div><div class="fader-grad major" style="bottom: 50%;"></div><div class="fader-grad" style="bottom: 54.1667%;"></div><div class="fader-grad major" style="bottom: 58.3333%;"></div><div class="fader-grad" style="bottom: 62.5%;"></div><div class="fader-grad major" style="bottom: 66.6667%;"></div><div class="fader-grad" style="bottom: 70.8333%;"></div><div class="fader-grad major" style="bottom: 75%;"></div><div class="fader-grad" style="bottom: 79.1667%;"></div><div class="fader-grad major" style="bottom: 83.3333%;"></div><div class="fader-grad" style="bottom: 87.5%;"></div><div class="fader-grad major" style="bottom: 91.6667%;"></div><div class="fader-grad" style="bottom: 95.8333%;"></div><div class="fader-grad major" style="bottom: 100%;"></div><div class="fader-zero"></div><div class="fader-tick"></div><div class="fader-thumb" id="fthumb-cymbal" style="bottom: calc(45% - 10px); overflow: hidden;"><canvas class="fader-env-canvas" width="34" height="18"></canvas><div class="fader-corner atk"><div class="fader-corner-dot"></div></div><div class="fader-corner dcy"><div class="fader-corner-dot"></div></div></div></div><button class="drum-btn" id="drum-cymbal"><span class="led" id="led-cymbal" style="background: rgb(255, 140, 102); box-shadow: rgb(255, 140, 102) 0px 0px 6px;"></span>C</button><div class="drum-name" id="dname-cymbal">CRASH</div></div><div class="channel"><div class="fader-track" id="fader-ride"><div class="fader-slot"></div><div class="fader-grad major" style="bottom: 0%;"></div><div class="fader-grad" style="bottom: 4.16667%;"></div><div class="fader-grad major" style="bottom: 8.33333%;"></div><div class="fader-grad" style="bottom: 12.5%;"></div><div class="fader-grad major" style="bottom: 16.6667%;"></div><div class="fader-grad" style="bottom: 20.8333%;"></div><div class="fader-grad major" style="bottom: 25%;"></div><div class="fader-grad" style="bottom: 29.1667%;"></div><div class="fader-grad major" style="bottom: 33.3333%;"></div><div class="fader-grad" style="bottom: 37.5%;"></div><div class="fader-grad major" style="bottom: 41.6667%;"></div><div class="fader-grad" style="bottom: 45.8333%;"></div><div class="fader-grad major" style="bottom: 50%;"></div><div class="fader-grad" style="bottom: 54.1667%;"></div><div class="fader-grad major" style="bottom: 58.3333%;"></div><div class="fader-grad" style="bottom: 62.5%;"></div><div class="fader-grad major" style="bottom: 66.6667%;"></div><div class="fader-grad" style="bottom: 70.8333%;"></div><div class="fader-grad major" style="bottom: 75%;"></div><div class="fader-grad" style="bottom: 79.1667%;"></div><div class="fader-grad major" style="bottom: 83.3333%;"></div><div class="fader-grad" style="bottom: 87.5%;"></div><div class="fader-grad major" style="bottom: 91.6667%;"></div><div class="fader-grad" style="bottom: 95.8333%;"></div><div class="fader-grad major" style="bottom: 100%;"></div><div class="fader-zero"></div><div class="fader-tick"></div><div class="fader-thumb" id="fthumb-ride" style="bottom: calc(50% - 10px); overflow: hidden;"><canvas class="fader-env-canvas" width="34" height="18"></canvas><div class="fader-corner atk"><div class="fader-corner-dot"></div></div><div class="fader-corner dcy"><div class="fader-corner-dot"></div></div></div></div><button class="drum-btn" id="drum-ride"><span class="led" id="led-ride" style="background: rgb(255, 192, 77); box-shadow: rgb(255, 192, 77) 0px 0px 6px;"></span>R</button><div class="drum-name" id="dname-ride">PING</div></div></div>
+
+
+  <!-- ── BOTTOM COMPARTMENT ── -->
+  <div class="bottom-comp">
+    <div class="bottom-tabs">
+      <button class="btab active" id="btab-sampler" onclick="switchTab(&#39;sampler&#39;)">
+        SAMPLER<span class="btab-dot" id="dot-sampler"></span>
+      </button>
+      <button class="btab" id="btab-pads" onclick="switchTab(&#39;pads&#39;)">
+        PADS<span class="btab-dot" id="dot-pads"></span>
+      </button>
+      <button class="btab" id="btab-piano" onclick="switchTab(&#39;piano&#39;)">
+        PIANO<span class="btab-dot" id="dot-piano"></span>
+      </button>
+      <button class="btab" id="btab-seq" onclick="switchTab(&#39;seq&#39;)">
+        STEP<span class="btab-dot" id="dot-seq"></span>
+      </button>
+      <button class="btab" id="btab-fx" onclick="switchTab(&#39;fx&#39;)">
+        FX<span class="btab-dot" id="dot-fx"></span>
+      </button>
+      <button class="btab" id="btab-pattern" onclick="switchTab(&#39;pattern&#39;)">
+        SEQUENCER<span class="btab-dot" id="dot-pattern"></span>
+      </button>
+      <button class="btab" id="btab-comp" onclick="switchTab(&#39;comp&#39;)">
+        MASTER<span class="btab-dot" id="dot-eq"></span>
+      </button>
+      <button class="btab btab-settings" id="btab-settings" onclick="switchTab(&#39;settings&#39;)" title="Settings">
+        ⚙
+      </button>
+    </div>
+
+    <!-- STEP SEQUENCER (full pane) -->
+    <div class="bottom-pane" id="pane-seq">
+      <div id="step-seq"><div class="seq-nav"><button class="seq-nav-btn">◀</button><div class="seq-bar-pips"><div id="seq-pip-0" class="seq-bar-pip in-range current"></div><div id="seq-pip-1" class="seq-bar-pip in-range"></div><div id="seq-pip-2" class="seq-bar-pip in-range"></div><div id="seq-pip-3" class="seq-bar-pip in-range"></div><div id="seq-pip-4" class="seq-bar-pip"></div><div id="seq-pip-5" class="seq-bar-pip"></div><div id="seq-pip-6" class="seq-bar-pip"></div><div id="seq-pip-7" class="seq-bar-pip"></div></div><div class="seq-bar-label" id="seq-bar-label">M1</div><button class="seq-nav-btn">▶</button><button class="seq-len-btn" id="seq-len-2" title="Reduce to 2 bars">:2</button><button class="seq-len-btn active" id="seq-len-4" title="Back to 4 bars">4M</button><button class="seq-len-btn" id="seq-len-8" title="Double to 8 bars">x2</button><button class="seq-clear-btn">CLEAR BAR</button></div><div class="seq-beat-nums"><div class="seq-beat-group"><div class="seq-beat-num downbeat">1</div><div class="seq-beat-num">2</div><div class="seq-beat-num">3</div><div class="seq-beat-num">4</div></div><div class="seq-beat-group"><div class="seq-beat-num downbeat">5</div><div class="seq-beat-num">6</div><div class="seq-beat-num">7</div><div class="seq-beat-num">8</div></div><div class="seq-beat-group"><div class="seq-beat-num downbeat">9</div><div class="seq-beat-num">10</div><div class="seq-beat-num">11</div><div class="seq-beat-num">12</div></div><div class="seq-beat-group"><div class="seq-beat-num downbeat">13</div><div class="seq-beat-num">14</div><div class="seq-beat-num">15</div><div class="seq-beat-num">16</div></div></div><div class="seq-row"><div class="seq-label" style="color: rgb(255, 122, 26);">K</div><div class="seq-steps-wrap"><div class="seq-group"><div class="seq-step on" id="seq-kick-0"></div><div class="seq-step" id="seq-kick-1"></div><div class="seq-step" id="seq-kick-2"></div><div class="seq-step" id="seq-kick-3"></div></div><div class="seq-group"><div class="seq-step" id="seq-kick-4"></div><div class="seq-step" id="seq-kick-5"></div><div class="seq-step" id="seq-kick-6"></div><div class="seq-step on" id="seq-kick-7"></div></div><div class="seq-group"><div class="seq-step" id="seq-kick-8"></div><div class="seq-step" id="seq-kick-9"></div><div class="seq-step on" id="seq-kick-10"></div><div class="seq-step" id="seq-kick-11"></div></div><div class="seq-group"><div class="seq-step" id="seq-kick-12"></div><div class="seq-step" id="seq-kick-13"></div><div class="seq-step" id="seq-kick-14"></div><div class="seq-step" id="seq-kick-15"></div></div></div><div class="seq-ts-mini" id="seq-ts-mini-kick" title="Timeshift KICK"><div class="seq-ts-mini-track"></div><div class="seq-ts-mini-center"></div><div class="seq-ts-mini-thumb" id="seq-ts-thumb-kick" style="left: 16px;"></div></div><button class="seq-shuf-btn" id="ts-shuf-kick" title="Shuffle KICK">⟳</button></div><div class="seq-row"><div class="seq-label" style="color: rgb(255, 80, 64);">S</div><div class="seq-steps-wrap"><div class="seq-group"><div class="seq-step" id="seq-snare-0"></div><div class="seq-step" id="seq-snare-1"></div><div class="seq-step" id="seq-snare-2"></div><div class="seq-step" id="seq-snare-3"></div></div><div class="seq-group"><div class="seq-step on" id="seq-snare-4"></div><div class="seq-step" id="seq-snare-5"></div><div class="seq-step" id="seq-snare-6"></div><div class="seq-step" id="seq-snare-7"></div></div><div class="seq-group"><div class="seq-step" id="seq-snare-8"></div><div class="seq-step" id="seq-snare-9"></div><div class="seq-step" id="seq-snare-10"></div><div class="seq-step" id="seq-snare-11"></div></div><div class="seq-group"><div class="seq-step on" id="seq-snare-12"></div><div class="seq-step" id="seq-snare-13"></div><div class="seq-step" id="seq-snare-14"></div><div class="seq-step" id="seq-snare-15"></div></div></div><div class="seq-ts-mini" id="seq-ts-mini-snare" title="Timeshift SNARE"><div class="seq-ts-mini-track"></div><div class="seq-ts-mini-center"></div><div class="seq-ts-mini-thumb" id="seq-ts-thumb-snare" style="left: 16px;"></div></div><button class="seq-shuf-btn" id="ts-shuf-snare" title="Shuffle SNARE">⟳</button></div><div class="seq-row"><div class="seq-label" style="color: rgb(255, 210, 77);">H</div><div class="seq-steps-wrap"><div class="seq-group"><div class="seq-step on" id="seq-hat-0"></div><div class="seq-step" id="seq-hat-1"></div><div class="seq-step on" id="seq-hat-2"></div><div class="seq-step" id="seq-hat-3"></div></div><div class="seq-group"><div class="seq-step on" id="seq-hat-4"></div><div class="seq-step" id="seq-hat-5"></div><div class="seq-step on" id="seq-hat-6"></div><div class="seq-step" id="seq-hat-7"></div></div><div class="seq-group"><div class="seq-step on" id="seq-hat-8"></div><div class="seq-step" id="seq-hat-9"></div><div class="seq-step on" id="seq-hat-10"></div><div class="seq-step" id="seq-hat-11"></div></div><div class="seq-group"><div class="seq-step on" id="seq-hat-12"></div><div class="seq-step" id="seq-hat-13"></div><div class="seq-step on" id="seq-hat-14"></div><div class="seq-step" id="seq-hat-15"></div></div></div><div class="seq-ts-mini" id="seq-ts-mini-hat" title="Timeshift HAT"><div class="seq-ts-mini-track"></div><div class="seq-ts-mini-center"></div><div class="seq-ts-mini-thumb" id="seq-ts-thumb-hat" style="left: 16px;"></div></div><button class="seq-shuf-btn" id="ts-shuf-hat" title="Shuffle HAT">⟳</button></div><div class="seq-row"><div class="seq-label" style="color: rgb(255, 170, 51);">O</div><div class="seq-steps-wrap"><div class="seq-group"><div class="seq-step" id="seq-open-0"></div><div class="seq-step" id="seq-open-1"></div><div class="seq-step" id="seq-open-2"></div><div class="seq-step" id="seq-open-3"></div></div><div class="seq-group"><div class="seq-step" id="seq-open-4"></div><div class="seq-step" id="seq-open-5"></div><div class="seq-step" id="seq-open-6"></div><div class="seq-step" id="seq-open-7"></div></div><div class="seq-group"><div class="seq-step" id="seq-open-8"></div><div class="seq-step" id="seq-open-9"></div><div class="seq-step" id="seq-open-10"></div><div class="seq-step" id="seq-open-11"></div></div><div class="seq-group"><div class="seq-step" id="seq-open-12"></div><div class="seq-step" id="seq-open-13"></div><div class="seq-step" id="seq-open-14"></div><div class="seq-step" id="seq-open-15"></div></div></div><div class="seq-ts-mini" id="seq-ts-mini-open" title="Timeshift OPEN"><div class="seq-ts-mini-track"></div><div class="seq-ts-mini-center"></div><div class="seq-ts-mini-thumb" id="seq-ts-thumb-open" style="left: 16px;"></div></div><button class="seq-shuf-btn" id="ts-shuf-open" title="Shuffle OPEN">⟳</button></div><div class="seq-row"><div class="seq-label" style="color: rgb(255, 140, 102);">C</div><div class="seq-steps-wrap"><div class="seq-group"><div class="seq-step on" id="seq-cymbal-0"></div><div class="seq-step" id="seq-cymbal-1"></div><div class="seq-step" id="seq-cymbal-2"></div><div class="seq-step" id="seq-cymbal-3"></div></div><div class="seq-group"><div class="seq-step" id="seq-cymbal-4"></div><div class="seq-step" id="seq-cymbal-5"></div><div class="seq-step" id="seq-cymbal-6"></div><div class="seq-step" id="seq-cymbal-7"></div></div><div class="seq-group"><div class="seq-step" id="seq-cymbal-8"></div><div class="seq-step" id="seq-cymbal-9"></div><div class="seq-step" id="seq-cymbal-10"></div><div class="seq-step" id="seq-cymbal-11"></div></div><div class="seq-group"><div class="seq-step" id="seq-cymbal-12"></div><div class="seq-step" id="seq-cymbal-13"></div><div class="seq-step" id="seq-cymbal-14"></div><div class="seq-step" id="seq-cymbal-15"></div></div></div><div class="seq-ts-mini" id="seq-ts-mini-cymbal" title="Timeshift CYMBAL"><div class="seq-ts-mini-track"></div><div class="seq-ts-mini-center"></div><div class="seq-ts-mini-thumb" id="seq-ts-thumb-cymbal" style="left: 16px;"></div></div><button class="seq-shuf-btn" id="ts-shuf-cymbal" title="Shuffle CYMBAL">⟳</button></div><div class="seq-row"><div class="seq-label" style="color: rgb(255, 192, 77);">R</div><div class="seq-steps-wrap"><div class="seq-group"><div class="seq-step" id="seq-ride-0"></div><div class="seq-step" id="seq-ride-1"></div><div class="seq-step" id="seq-ride-2"></div><div class="seq-step" id="seq-ride-3"></div></div><div class="seq-group"><div class="seq-step" id="seq-ride-4"></div><div class="seq-step" id="seq-ride-5"></div><div class="seq-step" id="seq-ride-6"></div><div class="seq-step" id="seq-ride-7"></div></div><div class="seq-group"><div class="seq-step" id="seq-ride-8"></div><div class="seq-step" id="seq-ride-9"></div><div class="seq-step" id="seq-ride-10"></div><div class="seq-step" id="seq-ride-11"></div></div><div class="seq-group"><div class="seq-step" id="seq-ride-12"></div><div class="seq-step" id="seq-ride-13"></div><div class="seq-step" id="seq-ride-14"></div><div class="seq-step" id="seq-ride-15"></div></div></div><div class="seq-ts-mini" id="seq-ts-mini-ride" title="Timeshift RIDE"><div class="seq-ts-mini-track"></div><div class="seq-ts-mini-center"></div><div class="seq-ts-mini-thumb" id="seq-ts-thumb-ride" style="left: 16px;"></div></div><button class="seq-shuf-btn" id="ts-shuf-ride" title="Shuffle RIDE">⟳</button></div></div>
+    </div>
+
+    <!-- PATTERN SEQUENCER -->
+    <div class="bottom-pane" id="pane-pattern"></div>
+
+    <!-- PADS (MPC 16 pads) -->
+    <div class="bottom-pane" id="pane-pads"></div>
+
+    <!-- SAMPLER -->
+    <div class="bottom-pane active" id="pane-sampler" style="padding:0;">
+      <!-- Drop zone / waveform area -->
+      <div id="smp-drop" style="
+        flex:1; position:relative; background:#0a0a0c;
+        border-bottom:1px solid #1a1a1e; cursor:crosshair;
+        min-height:90px; overflow:hidden;
+      ">
+        <!-- Empty state -->
+        <div id="smp-empty" style="
+          position:absolute; inset:0; display:flex; flex-direction:column;
+          align-items:center; justify-content:center; gap:6px;
+          color:#666672; font-size:11px; letter-spacing:0.2em; pointer-events:none;
+        ">
+          <div style="font-size:26px;opacity:0.6;">↓</div>
+          <div style="font-weight:700;">DROP A SAMPLE HERE</div>
+          <div style="font-size:9px;color:#44444e;letter-spacing:0.15em;">OR CLICK TO BROWSE</div>
+        </div>
+        <!-- Waveform canvas -->
+        <canvas id="smp-canvas" style="position:absolute;inset:0;width:100%;height:100%;display:none;touch-action:none;"></canvas>
+        <!-- Playhead -->
+        <div id="smp-playhead" style="position:absolute;top:0;bottom:0;width:1px;background:#fff;opacity:0;pointer-events:none;left:0;"></div>
+        <!-- Bandeau de progression REMOVE DRUMS (overlay, masqué par défaut) -->
+        <div id="smp-nodrums-progress" style="
+          position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+          display:none; flex-direction:column; gap:6px; align-items:center;
+          padding:12px 22px; z-index:20; pointer-events:none;
+          background:rgba(20,12,4,0.92); border:1px solid #ff7a1a;
+          border-radius:6px; box-shadow:0 4px 18px rgba(0,0,0,0.6);
+        ">
+          <div id="smp-nodrums-label" style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#ff9440;font-family:monospace;">REMOVE DRUMS · 0%</div>
+          <div style="width:180px;height:8px;background:#1a1208;border:1px solid #5a3410;border-radius:4px;overflow:hidden;">
+            <div id="smp-nodrums-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#ff7a1a,#ffb066);transition:width 0.12s linear;"></div>
+          </div>
+        </div>
+        <!-- Scrollbar horizontale (visible uniquement si zoom > 1x) -->
+        <div id="smp-scrollbar-wrap" style="position:absolute;bottom:0;left:0;right:0;height:14px;background:#111116;border-top:1px solid #2a2a32;display:none;align-items:center;padding:0;z-index:10;">
+          <input type="range" id="smp-waveform-scroll" min="0" max="1000" value="500" step="1"
+            style="width:100%;height:14px;margin:0;cursor:ew-resize;
+              appearance:none;-webkit-appearance:none;background:transparent;"
+            oninput="smpScrollWaveView(this.value/1000)"
+            title="Scroll the waveform (active when zoomed)">
+        </div>
+        <style>
+          #smp-waveform-scroll::-webkit-slider-runnable-track {
+            height:14px; background:#1a1a22; border-radius:0;
+          }
+          #smp-waveform-scroll::-webkit-slider-thumb {
+            -webkit-appearance:none; appearance:none;
+            width:40px; height:14px; border-radius:2px;
+            background:linear-gradient(180deg,#ff9440,#c85a00);
+            border:none; cursor:ew-resize; margin-top:0;
+          }
+          #smp-waveform-scroll::-moz-range-track {
+            height:14px; background:#1a1a22; border-radius:0; border:none;
+          }
+          #smp-waveform-scroll::-moz-range-thumb {
+            width:40px; height:14px; border-radius:2px;
+            background:linear-gradient(180deg,#ff9440,#c85a00);
+            border:none; cursor:ew-resize;
+          }
+        </style>
+        <!-- Toolbar left -->
+        <div id="smp-toolbar-left" style="position:absolute;top:4px;left:4px;display:none;gap:3px;flex-direction:row;">
+          <button class="smp-tbtn" onclick="smpBrowserOpen()" title="Browse samples" style="color:#ff9440;border-color:#ff7a1a;padding:4px 12px;font-size:10px;letter-spacing:0.18em;">📁 BROWSE</button>
+        </div>
+        <!-- Toolbar overlay -->
+        <div id="smp-toolbar" style="
+          position:absolute;top:4px;right:4px;
+          display:none;gap:3px;flex-direction:row;
+        ">
+          <button class="smp-zoom-btn smp-slice-btn" id="smp-slice-mode-btn" onclick="smpToggleSliceMode()" title="Slice mode: click on the waveform to place markers">✂ SLICE</button>
+          <button class="smp-zoom-btn smp-slice-btn" id="smp-nodrums-btn" onclick="smpRemoveDrums()" title="Remove drums: extract the harmonic part (melody/bass/vocals) and strip the percussion. Offline, may take a few seconds.">⊘ DRUMS</button>
+          <button class="smp-zoom-btn smp-slice-btn on" id="smp-transport-btn" title="Sampler follows song transport at original speed. Turn off to keep loaded samples silent during song playback.">SMP RUN</button>
+          <button class="smp-zoom-btn" id="smp-play-btn" onclick="smpPlayPreview(0)" title="Play sample from the beginning">▶</button>
+          <button class="smp-zoom-btn" id="smp-stop-btn" onclick="smpStopPreview()" title="Stop playback">■</button>
+          <button class="smp-zoom-btn" onclick="smpWaveZoomOut()" title="Zoom out waveform (or scroll mouse wheel down over the waveform)">−</button>
+          <button class="smp-zoom-btn" onclick="smpWaveZoomIn()" title="Zoom in waveform — place markers precisely (or scroll mouse wheel up; snaps to a nearby marker)">+</button>
+          <div style="position:relative;">
+            <button class="smp-zoom-btn smp-slice-btn" id="smp-pitch-btn" onclick="smpTogglePitchPopup()" title="Sample pitch" style="color:#ff9440;border-color:#ff7a1a;">PITCH</button>
+            <!-- Pitch popup -->
+            <div id="smp-pitch-popup">
+              <div style="font-size:9px;color:#ff9440;letter-spacing:0.08em;text-align:center;" id="smp-pitch-val">0 ST</div>
+              <div id="smp-pitch-track" style="width:16px;height:120px;background:#0e0e10;border:1px solid #333;border-radius:3px;position:relative;cursor:ns-resize;touch-action:none;margin:0 auto;">
+                <div style="position:absolute;left:0;right:0;height:2px;background:#ff7a1a;top:50%;margin-top:-1px;opacity:0.5;"></div>
+                <div id="smp-pitch-thumb" style="position:absolute;left:50%;margin-left:-8px;width:16px;height:16px;background:linear-gradient(180deg,#ff9440,#e8650f);border:1px solid #ffb066;border-radius:3px;top:50%;margin-top:-8px;cursor:ns-resize;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:2px;padding:0 2px;" title="Sampler volume">
+            <span style="font-size:7px;color:#888;letter-spacing:0.08em;line-height:1;">VOL</span>
+            <input type="range" id="smp-vol-slider" min="0" max="1" step="0.01" value="0.8"
+              style="width:48px;cursor:pointer;accent-color:#ff7a1a;"
+              oninput="smpSetVolume(this.value)">
+          </div>
+          <button class="smp-tbtn" onclick="smpAutoSlice()" title="Divide into 16">÷16</button>
+          <button class="smp-tbtn" onclick="smpSnapTransients()" title="Snap to transients">⚡</button>
+          <button class="smp-tbtn" onclick="smpClearSlices()" title="Clear slices">✕</button>
+        </div>
+      </div>
+      <!-- 16 Pads -->
+      <div id="smp-pads" style="
+        display:grid; grid-template-columns:repeat(16,1fr);
+        gap:3px; padding:4px; background:#111114;
+        overflow:hidden;
+      "><div class="smp-pad" id="smp-pad-0"><div class="smp-pad-num">1</div></div><div class="smp-pad" id="smp-pad-1"><div class="smp-pad-num">2</div></div><div class="smp-pad" id="smp-pad-2"><div class="smp-pad-num">3</div></div><div class="smp-pad" id="smp-pad-3"><div class="smp-pad-num">4</div></div><div class="smp-pad" id="smp-pad-4"><div class="smp-pad-num">5</div></div><div class="smp-pad" id="smp-pad-5"><div class="smp-pad-num">6</div></div><div class="smp-pad" id="smp-pad-6"><div class="smp-pad-num">7</div></div><div class="smp-pad" id="smp-pad-7"><div class="smp-pad-num">8</div></div><div class="smp-pad" id="smp-pad-8"><div class="smp-pad-num">9</div></div><div class="smp-pad" id="smp-pad-9"><div class="smp-pad-num">10</div></div><div class="smp-pad" id="smp-pad-10"><div class="smp-pad-num">11</div></div><div class="smp-pad" id="smp-pad-11"><div class="smp-pad-num">12</div></div><div class="smp-pad" id="smp-pad-12"><div class="smp-pad-num">13</div></div><div class="smp-pad" id="smp-pad-13"><div class="smp-pad-num">14</div></div><div class="smp-pad" id="smp-pad-14"><div class="smp-pad-num">15</div></div><div class="smp-pad" id="smp-pad-15"><div class="smp-pad-num">16</div></div></div>
+      <!-- 16 step-sequencer pads linked to sampler slices -->
+      <div id="smp-seq-pads" style="
+        display:grid; grid-template-columns:repeat(16,1fr);
+        gap:3px; padding:4px; background:#0e0e12;
+        border-top:1px solid #2a2a3a;
+      "><div class="smp-seq-pad" id="smp-seq-pad-0"><span class="smp-seq-num">1</span><span class="smp-seq-main" id="smp-seq-assign-0">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-1"><span class="smp-seq-num">2</span><span class="smp-seq-main" id="smp-seq-assign-1">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-2"><span class="smp-seq-num">3</span><span class="smp-seq-main" id="smp-seq-assign-2">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-3"><span class="smp-seq-num">4</span><span class="smp-seq-main" id="smp-seq-assign-3">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-4"><span class="smp-seq-num">5</span><span class="smp-seq-main" id="smp-seq-assign-4">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-5"><span class="smp-seq-num">6</span><span class="smp-seq-main" id="smp-seq-assign-5">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-6"><span class="smp-seq-num">7</span><span class="smp-seq-main" id="smp-seq-assign-6">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-7"><span class="smp-seq-num">8</span><span class="smp-seq-main" id="smp-seq-assign-7">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-8"><span class="smp-seq-num">9</span><span class="smp-seq-main" id="smp-seq-assign-8">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-9"><span class="smp-seq-num">10</span><span class="smp-seq-main" id="smp-seq-assign-9">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-10"><span class="smp-seq-num">11</span><span class="smp-seq-main" id="smp-seq-assign-10">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-11"><span class="smp-seq-num">12</span><span class="smp-seq-main" id="smp-seq-assign-11">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-12"><span class="smp-seq-num">13</span><span class="smp-seq-main" id="smp-seq-assign-12">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-13"><span class="smp-seq-num">14</span><span class="smp-seq-main" id="smp-seq-assign-13">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-14"><span class="smp-seq-num">15</span><span class="smp-seq-main" id="smp-seq-assign-14">—</span></div><div class="smp-seq-pad" id="smp-seq-pad-15"><span class="smp-seq-num">16</span><span class="smp-seq-main" id="smp-seq-assign-15">—</span></div></div>
+    </div>
+
+    <!-- TIMESHIFT -->
+    <div class="bottom-pane" id="pane-timeshift" style="display:none">
+      <div class="ts-pane-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <button class="ts-reset-all" onclick="shuffleAllTracks()" style="color:#ff9440;border-color:#ff9440aa;">⟳ SHUFFLE ALL</button>
+<button class="ts-reset-all" onclick="resetAllTimeshift()">RESET TS</button>
+      </div>
+      <div class="ts-rows" id="timeshift-rows"><div class="ts-row"><div class="ts-track-label" style="color: rgb(255, 122, 26);">K</div><div class="ts-slider-wrap" id="ts-wrap-kick"><div class="ts-track-bg"></div><div class="ts-center-tick"></div><div class="ts-fill" id="ts-fill-kick" style="display: none;"></div><div class="ts-thumb" id="ts-thumb-kick" style="left: 50%;"></div></div><div class="ts-value" id="ts-val-kick">0</div><button class="ts-shuf-btn" id="ts-shuf-kick" title="Shuffle KICK">⟳</button></div><div class="ts-row"><div class="ts-track-label" style="color: rgb(255, 80, 64);">S</div><div class="ts-slider-wrap" id="ts-wrap-snare"><div class="ts-track-bg"></div><div class="ts-center-tick"></div><div class="ts-fill" id="ts-fill-snare" style="display: none;"></div><div class="ts-thumb" id="ts-thumb-snare" style="left: 50%;"></div></div><div class="ts-value" id="ts-val-snare">0</div><button class="ts-shuf-btn" id="ts-shuf-snare" title="Shuffle SNARE">⟳</button></div><div class="ts-row"><div class="ts-track-label" style="color: rgb(255, 210, 77);">H</div><div class="ts-slider-wrap" id="ts-wrap-hat"><div class="ts-track-bg"></div><div class="ts-center-tick"></div><div class="ts-fill" id="ts-fill-hat" style="display: none;"></div><div class="ts-thumb" id="ts-thumb-hat" style="left: 50%;"></div></div><div class="ts-value" id="ts-val-hat">0</div><button class="ts-shuf-btn" id="ts-shuf-hat" title="Shuffle HAT">⟳</button></div><div class="ts-row"><div class="ts-track-label" style="color: rgb(255, 170, 51);">O</div><div class="ts-slider-wrap" id="ts-wrap-open"><div class="ts-track-bg"></div><div class="ts-center-tick"></div><div class="ts-fill" id="ts-fill-open" style="display: none;"></div><div class="ts-thumb" id="ts-thumb-open" style="left: 50%;"></div></div><div class="ts-value" id="ts-val-open">0</div><button class="ts-shuf-btn" id="ts-shuf-open" title="Shuffle OPEN">⟳</button></div><div class="ts-row"><div class="ts-track-label" style="color: rgb(255, 140, 102);">C</div><div class="ts-slider-wrap" id="ts-wrap-cymbal"><div class="ts-track-bg"></div><div class="ts-center-tick"></div><div class="ts-fill" id="ts-fill-cymbal" style="display: none;"></div><div class="ts-thumb" id="ts-thumb-cymbal" style="left: 50%;"></div></div><div class="ts-value" id="ts-val-cymbal">0</div><button class="ts-shuf-btn" id="ts-shuf-cymbal" title="Shuffle CYMBAL">⟳</button></div><div class="ts-row"><div class="ts-track-label" style="color: rgb(255, 192, 77);">R</div><div class="ts-slider-wrap" id="ts-wrap-ride"><div class="ts-track-bg"></div><div class="ts-center-tick"></div><div class="ts-fill" id="ts-fill-ride" style="display: none;"></div><div class="ts-thumb" id="ts-thumb-ride" style="left: 50%;"></div></div><div class="ts-value" id="ts-val-ride">0</div><button class="ts-shuf-btn" id="ts-shuf-ride" title="Shuffle RIDE">⟳</button></div></div>
+    </div>
+
+    <!-- FX -->
+    <div class="bottom-pane" id="pane-fx">
+      <div class="fx-pane-grid" id="fx-grid"></div>
+    </div>
+
+    <!-- BASS KEYBOARD LIVE -->
+    <div class="bottom-pane" id="pane-piano" style="padding:6px 8px 8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:6px;">
+        <!-- Gauche : LIVE PLAY + OCT -->
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <div style="font-size:11px;letter-spacing:0.18em;color:#2e2922;font-weight:700;">LIVE PLAY</div>
+          <div style="display:flex;align-items:center;gap:2px;" title="Octave">
+            <span style="font-size:10px;color:#2e2922;letter-spacing:0.1em;">OCT</span>
+            <button onclick="bassOctDown()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:12px;width:18px;height:18px;line-height:1;border-radius:2px;cursor:pointer;padding:0;">−</button>
+            <span id="bass-oct-val" style="font-size:12px;color:#ff9440;letter-spacing:0.08em;min-width:16px;text-align:center;">1</span>
+            <button onclick="bassOctUp()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:12px;width:18px;height:18px;line-height:1;border-radius:2px;cursor:pointer;padding:0;">+</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;row-gap:3px;justify-content:flex-end;">
+          <!-- BANK -->
+          <div id="smp-bank-wrap" style="position:relative;">
+            <button id="smp-bank-trigger" onclick="pianoBankToggleMenu()" style="background:#1e1e26;border:1px solid #3a3a42;color:#c8c0b0;font-family:inherit;font-size:10px;letter-spacing:0.06em;padding:3px 8px;border-radius:3px;cursor:pointer;max-width:120px;min-width:60px;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">— —</button>
+            <div id="smp-bank-menu" style="display:none;position:fixed;background:#16161e;border:1px solid #3a3a42;border-radius:3px;min-width:180px;z-index:999;box-shadow:0 4px 16px #00000099;overflow-y:auto;max-height:220px;"></div>
+          </div>
+          <!-- ADR-24 : transpose piano — demi-ton (TR) puis 1/10e de demi-ton (FIN) -->
+          <div style="display:flex;align-items:center;gap:2px;" title="Transpose (semitones)">
+            <span style="font-size:10px;color:#2e2922;letter-spacing:0.1em;">TR</span>
+            <button onclick="bassTransposeDown()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:12px;width:18px;height:18px;line-height:1;border-radius:2px;cursor:pointer;padding:0;">−</button>
+            <span id="bass-transpose-val" style="font-size:12px;color:#ff9440;letter-spacing:0.04em;min-width:16px;text-align:center;">0</span>
+            <button onclick="bassTransposeUp()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:12px;width:18px;height:18px;line-height:1;border-radius:2px;cursor:pointer;padding:0;">+</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:2px;" title="Fine transpose (1/10 semitone)">
+            <span style="font-size:10px;color:#2e2922;letter-spacing:0.1em;">FIN</span>
+            <button onclick="bassFineTransposeDown()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:12px;width:18px;height:18px;line-height:1;border-radius:2px;cursor:pointer;padding:0;">−</button>
+            <span id="bass-fine-transpose-val" style="font-size:12px;color:#ff9440;letter-spacing:0.04em;min-width:24px;text-align:center;">0.0</span>
+            <button onclick="bassFineTransposeUp()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:12px;width:18px;height:18px;line-height:1;border-radius:2px;cursor:pointer;padding:0;">+</button>
+          </div>
+          <span id="bass-rec-count" style="font-size:9px;color:#ff5040;letter-spacing:0.1em;display:none;">⏺ 0 NOTES</span>
+          <button onclick="bassClearRec()" style="background:#1a0e08;border:1px solid #ff944066;color:#ff9440;font-family:inherit;font-size:11px;letter-spacing:0.12em;padding:4px 9px;border-radius:2px;cursor:pointer;" title="Clear recorded notes">CLEAR REC</button>
+          <button onclick="pianoBankClear()" style="background:#1a0e08;border:1px solid #ff944066;color:#ff9440;font-family:inherit;font-size:11px;letter-spacing:0.12em;padding:4px 9px;border-radius:2px;cursor:pointer;" title="Clear the 8 sample slots">CLEAR PAD</button>
+          <button id="piano-roll-btn" onclick="pianoRollToggle()" style="background:#2a2b30;border:1px solid #4a4b50;color:#a0a0a8;font-family:inherit;font-size:11px;letter-spacing:0.12em;padding:4px 9px;border-radius:2px;cursor:pointer;" title="Show/hide piano roll">ROLL</button>
+          <span id="bass-note-display" style="font-size:11px;font-weight:700;color:#4a9fff;letter-spacing:0.06em;text-shadow:0 0 8px #4a9fff66;min-width:30px;text-align:right;">—</span>
+        </div>
+      </div>
+      <!-- Piano keyboard -->
+      <div id="bass-kbd" style="position:relative;height:110px;background:#0a0a0c;border-radius:4px;overflow:hidden;border:1px solid #1a1a2a;user-select:none;touch-action:none;"></div>
+      <!-- Piano Roll -->
+      <div id="piano-roll-wrap" style="display:none;margin-top:6px;">
+        <canvas id="piano-roll-canvas" width="400" height="300" style="width:100%;height:300px;display:block;border-radius:3px;cursor:crosshair;touch-action:none;border:1px solid #1a1a2a;"></canvas>
+        <input type="range" id="piano-roll-hbar" min="0" max="0" value="0" style="width:100%;height:8px;margin-top:3px;accent-color:#4a9fff;cursor:pointer;" title="Scroll horizontal">
+      </div>
+    </div>
+
+    <!-- MASTER (EQ + BUS COMPRESSOR) -->
+    <div class="bottom-pane" id="pane-comp" style="padding:8px 6px 6px;overflow-y:auto;">
+      <!-- EQ 5 bandes -->
+      <div style="position:relative;border-radius:8px;overflow:hidden;background-image:url('assets/master/eq.svg');background-size:100% 100%;background-repeat:no-repeat;margin-bottom:6px;">
+        <div style="padding:14px 24px 22px;">
+          <div style="position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:10px;">
+            <div class="pane-section-title">MASTER EQ</div>
+            <button id="eq-bypass-btn" class="pane-bypass-btn is-active" onclick="toggleEqBypass()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);">ACTIVE</button>
+          </div>
+          <canvas id="eq-canvas" style="width:100%;height:140px;display:block;cursor:crosshair;touch-action:none;border-radius:4px;"></canvas>
+          <div id="eq-band-info" style="font-size:9px;letter-spacing:0.1em;color:#8a7a6a;margin-top:4px;text-align:center;min-height:10px;"></div>
+        </div>
+      </div>
+
+      <!-- Bus compressor -->
+      <div style="position:relative;margin:12px 0 6px;border-radius:8px;overflow:hidden;background-image:url('assets/glitchrealm-logo.webp'),url('assets/master/sprites/paw.png'),url('assets/master/comp.svg');background-position:8px center,right 12px center,center;background-size:auto 76%,auto 44%,100% 100%;background-repeat:no-repeat,no-repeat,no-repeat;">
+        <div style="padding:14px 18px 8px;">
+          <div style="position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:12px;padding-top:2px;">
+            <div class="pane-section-title">BUS COMPRESSOR</div>
+            <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;gap:6px;align-items:center;">
+              <button id="comp-schpf-btn" onclick="toggleScHpf()" title="Sidechain high-pass — cycle OFF / 60 / 80 / 100 / 120 Hz" style="font-size:11px;letter-spacing:0.08em;padding:5px 13px;border-radius:4px;border:1px solid #9a9690;background:none;color:#9a9690;cursor:pointer;font-family:inherit;font-weight:700;">SC HPF</button>
+              <button id="comp-bypass-btn" class="pane-bypass-btn" onclick="toggleCompBypass()">BYPASS</button>
+            </div>
+          </div>
+          <!-- Knobs row -->
+          <div style="display:flex;gap:8px;justify-content:space-around;align-items:flex-end;margin-bottom:8px;">
+            <div class="ssl-knob-wrap">
+              <div class="ssl-knob" id="comp-thresh-knob" data-comp="thresh" data-min="-20" data-max="20" data-val="-18">
+                <div class="ssl-knob-mark" id="comp-thresh-mark"></div>
+              </div>
+              <div class="ssl-knob-label">THRESH</div>
+              <div class="ssl-knob-val" id="comp-thresh-val">-18dB</div>
+            </div>
+            <div class="ssl-knob-wrap">
+              <div class="ssl-knob" id="comp-ratio-knob" data-comp="ratio" data-min="0" data-max="5" data-val="2">
+                <div class="ssl-knob-mark" id="comp-ratio-mark"></div>
+              </div>
+              <div class="ssl-knob-label">RATIO</div>
+              <div class="ssl-knob-val" id="comp-ratio-val">4:1</div>
+            </div>
+            <div class="ssl-knob-wrap">
+              <div class="ssl-knob" id="comp-attack-knob" data-comp="attack" data-min="0" data-max="8" data-val="1">
+                <div class="ssl-knob-mark" id="comp-attack-mark"></div>
+              </div>
+              <div class="ssl-knob-label">ATTACK</div>
+              <div class="ssl-knob-val" id="comp-attack-val">3ms</div>
+            </div>
+            <div class="ssl-knob-wrap">
+              <div class="ssl-knob" id="comp-release-knob" data-comp="release" data-min="0" data-max="6" data-val="2">
+                <div class="ssl-knob-mark" id="comp-release-mark"></div>
+              </div>
+              <div class="ssl-knob-label">RELEASE</div>
+              <div class="ssl-knob-val" id="comp-release-val">AUTO</div>
+            </div>
+            <div class="ssl-knob-wrap">
+              <div class="ssl-knob" id="comp-makeup-knob" data-comp="makeup" data-min="-6" data-max="18" data-val="0">
+                <div class="ssl-knob-mark" id="comp-makeup-mark"></div>
+              </div>
+              <div class="ssl-knob-label">MAKEUP</div>
+              <div class="ssl-knob-val" id="comp-makeup-val">0dB</div>
+            </div>
+          </div>
+          <!-- GR du compresseur de bus -->
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+            <span style="font-size:9px;letter-spacing:0.12em;color:#6a6a6a;white-space:nowrap;">COMP GR</span>
+            <div style="flex:1;height:8px;background:#111;border:1px solid #222;border-radius:2px;position:relative;overflow:hidden;">
+              <div id="comp-gr-bar" style="position:absolute;right:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg,#6adf6a,#ffd24d,#ff5040);transition:width 80ms;"></div>
+            </div>
+            <span id="comp-gr-val" style="font-size:9px;color:#6adf6a;letter-spacing:0.08em;min-width:38px;text-align:right;">0.0 dB</span>
+          </div>
+        </div>
+      </div>
+      <!-- TRANSIENT DESIGNER — façonneur de transitoires "PUNCH" -->
+      <div style="position:relative;margin:6px 0 6px;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#2a2622,#1b1815);border:1px solid rgba(255,148,64,0.12);">
+        <div style="padding:14px 18px 8px;">
+          <div style="position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:4px;padding-top:2px;">
+            <div class="pane-section-title" style="color:#ece2d2;">TRANSIENT DESIGNER</div>
+            <button id="tx-bypass-btn" class="pane-bypass-btn" onclick="toggleTxBypass()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);">BYPASS</button>
+          </div>
+          <div style="text-align:center;font-size:8px;letter-spacing:0.12em;color:#9a8f7e;margin-bottom:10px;">ATTACK = PUNCH · SUSTAIN = BODY</div>
+          <div style="display:flex;gap:24px;justify-content:center;align-items:flex-end;margin-bottom:6px;">
+            <div class="ssl-knob-wrap">
+              <div class="tx-knob" id="tx-attack-knob" data-tx="attack" data-min="-100" data-max="100" data-val="0">
+                <div class="ssl-knob-mark" id="tx-attack-mark"></div>
+              </div>
+              <div class="ssl-knob-label">ATTACK</div>
+              <div class="ssl-knob-val" id="tx-attack-val">0%</div>
+            </div>
+            <div class="ssl-knob-wrap">
+              <div class="tx-knob" id="tx-sustain-knob" data-tx="sustain" data-min="-100" data-max="100" data-val="0">
+                <div class="ssl-knob-mark" id="tx-sustain-mark"></div>
+              </div>
+              <div class="ssl-knob-label">SUSTAIN</div>
+              <div class="ssl-knob-val" id="tx-sustain-val">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAPE EMULATOR — chaleur/saturation de bande magnétique -->
+      <div style="position:relative;margin:6px 0 6px;border-radius:8px;overflow:hidden;background-image:url('assets/master/sprites/tape.png'),url('assets/master/tape.svg');background-position:left 12px bottom 9px,center;background-size:auto 90%,100% 100%;background-repeat:no-repeat,no-repeat;">
+        <div style="padding:14px 18px 8px;">
+          <div style="position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:12px;padding-top:2px;">
+            <div class="pane-section-title">TAPE EMULATOR</div>
+            <button id="tape-bypass-btn" class="pane-bypass-btn" onclick="toggleTapeBypass()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);">BYPASS</button>
+          </div>
+          <div style="display:flex;gap:24px;justify-content:center;align-items:flex-end;margin-bottom:6px;">
+            <div class="ssl-knob-wrap">
+              <div class="tape-knob" id="tape-input-knob" data-tape="input" data-min="-12" data-max="12" data-val="0">
+                <div class="ssl-knob-mark" id="tape-input-mark"></div>
+              </div>
+              <div class="ssl-knob-label">INPUT</div>
+              <div class="ssl-knob-val" id="tape-input-val">0dB</div>
+            </div>
+            <div class="ssl-knob-wrap">
+              <div class="tape-knob" id="tape-output-knob" data-tape="output" data-min="-12" data-max="12" data-val="0">
+                <div class="ssl-knob-mark" id="tape-output-mark"></div>
+              </div>
+              <div class="ssl-knob-label">OUTPUT</div>
+              <div class="ssl-knob-val" id="tape-output-val">0dB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Élargisseur stéréo (façon K-Stereo) — par bus, + mono-bass commun -->
+      <div style="position:relative;margin:12px 0 6px;border-radius:8px;overflow:hidden;background-image:url('assets/master/sprites/fish.png'),url('assets/master/widener.svg');background-position:right 12px center,center;background-size:auto 60%,100% 100%;background-repeat:no-repeat,no-repeat;">
+        <div style="padding:12px 18px 14px;">
+          <div style="display:flex;justify-content:center;align-items:center;margin-bottom:10px;padding-top:2px;">
+            <div class="pane-section-title">STEREO WIDENER</div>
+          </div>
+          <div class="fx-pane-grid" id="widener-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 20px;"></div>
+        </div>
+      </div>
+
+      <!-- Limiter de sortie -->
+      <div style="position:relative;border-radius:8px;overflow:hidden;background-image:url('assets/master/limiter.svg');background-size:100% 100%;background-repeat:no-repeat;margin:10px 0 6px;">
+        <div style="padding:14px 24px 16px;">
+      <div style="position:relative;display:flex;justify-content:center;align-items:center;margin:0 0 10px;">
+        <div class="pane-section-title">LIMITER</div>
+        <button id="limiter-bypass-btn" class="pane-bypass-btn is-active" onclick="toggleLimiterBypass()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);">ACTIVE</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <label style="font-size:11px;letter-spacing:0.12em;color:#1a1612;font-weight:700;white-space:nowrap;">THRESHOLD</label>
+        <input type="range" id="limiter-thresh-slider" min="-20" max="0" step="0.1" value="-1"
+          oninput="setLimiterThreshold(this.value)"
+          style="flex:1;accent-color:#ff9040;cursor:pointer;">
+        <span id="limiter-thresh-val" style="font-size:9px;color:#ff9040;letter-spacing:0.08em;min-width:36px;text-align:right;">-1.0 dB</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <label style="font-size:11px;letter-spacing:0.12em;color:#1a1612;font-weight:700;white-space:nowrap;">OUTPUT</label>
+        <input type="range" id="limiter-output-slider" min="-12" max="6" step="0.1" value="0"
+          oninput="setLimiterOutput(this.value)"
+          style="flex:1;accent-color:#6adf6a;cursor:pointer;">
+        <span id="limiter-output-val" style="font-size:9px;color:#6adf6a;letter-spacing:0.08em;min-width:36px;text-align:right;">0.0 dB</span>
+      </div>
+      <div style="background:rgba(30,26,20,0.14);border:1px solid rgba(42,38,32,0.4);border-radius:6px;padding:6px 8px;margin:0 16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:9px;letter-spacing:0.12em;color:#6a6a6a;">GR</span>
+          <span style="font-size:9px;letter-spacing:0.12em;color:#6a6a6a;">OUTPUT</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:flex-end;">
+          <!-- GR meter (goes left = more limiting) -->
+          <div style="flex:1;position:relative;">
+            <div style="height:14px;background:#111;border:1px solid #222;border-radius:2px;position:relative;overflow:hidden;">
+              <div id="limiter-gr-bar" style="position:absolute;right:0;top:0;bottom:0;width:0%;background:linear-gradient(90deg,#ff5040,#ff9040);transition:width 60ms;"></div>
+              <!-- Tick marks -->
+              <div style="position:absolute;inset:0;display:flex;justify-content:space-between;padding:0 1px;pointer-events:none;">
+                <div style="width:1px;background:#2a2a2a;"></div>
+                <div style="width:1px;background:#2a2a2a;"></div>
+                <div style="width:1px;background:#2a2a2a;"></div>
+                <div style="width:1px;background:#2a2a2a;"></div>
+                <div style="width:1px;background:#2a2a2a;"></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:2px;">
+              <span style="font-size:7px;color:#444;">-12</span>
+              <span style="font-size:7px;color:#444;">-6</span>
+              <span style="font-size:7px;color:#444;">-3</span>
+              <span style="font-size:7px;color:#444;">-1</span>
+              <span style="font-size:7px;color:#444;">0</span>
+            </div>
+          </div>
+          <!-- Output level meter -->
+          <div style="flex:1;position:relative;">
+            <div style="height:14px;background:#111;border:1px solid #222;border-radius:2px;position:relative;overflow:hidden;">
+              <div id="limiter-out-bar" style="position:absolute;left:0;top:0;bottom:0;width:60%;background:linear-gradient(90deg,#4a9fff,#6adf6a,#ffd24d,#ff5040);transition:width 60ms;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:2px;">
+              <span style="font-size:7px;color:#444;">-∞</span>
+              <span style="font-size:7px;color:#444;">-12</span>
+              <span style="font-size:7px;color:#444;">-6</span>
+              <span style="font-size:7px;color:#444;">0</span>
+              <span style="font-size:7px;color:#444;">+3</span>
+            </div>
+          </div>
+        </div>
+        <div id="limiter-gr-display" style="text-align:center;font-size:10px;color:#ff9040;letter-spacing:0.08em;margin-top:4px;min-height:10px;">GR: 0.0 dB</div>
+      </div>
+        </div>
+      </div>
+
+      <!-- ── LUFS METER ─────────────────────────── -->
+      <div style="position:relative;border-radius:8px;overflow:hidden;background-image:url('assets/master/lufs.svg');background-size:100% 100%;background-repeat:no-repeat;margin:6px 0 0;">
+        <div style="padding:14px 22px 14px;">
+        <div class="pane-section-title" style="margin-bottom:10px;text-align:center;">LUFS METER</div>
+
+        <!-- Valeur momentanée -->
+        <div class="lufs-main">
+          <div id="lufs-m-val" class="lufs-m-num">—</div>
+          <div class="lufs-m-unit">LUFS<br><span style="font-size:8px;letter-spacing:0.08em;color:#6a6560;">MOMENTARY</span></div>
+        </div>
+
+        <!-- Barre de niveau + aiguille -->
+        <div class="lufs-scale-wrap">
+          <div class="lufs-bar-bg">
+            <div id="lufs-fill" class="lufs-fill"></div>
+            <div id="lufs-needle" class="lufs-needle"></div>
+          </div>
+          <div class="lufs-scale-labels">
+            <span>-30</span><span>-23</span><span>-14</span><span>-9</span><span>-6</span>
+          </div>
+        </div>
+
+        <span id="lufs-s-val" style="display:none;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS (⚙) -->
+    <div class="bottom-pane" id="pane-settings">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-size:9px;letter-spacing:0.18em;color:#2e2922;font-weight:700;">SETTINGS</div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:8px;padding:10px 6px;">
+        <button id="export-wav-btn" onclick="exportTracksAsWav()" style="background:#1a1410;border:1px solid #ff7a1a88;color:#ff9440;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:0.16em;padding:8px 18px;border-radius:4px;cursor:pointer;text-shadow:0 1px 4px rgba(0,0,0,0.9);" onmouseover="this.style.background='#2a1e0e'" onmouseout="this.style.background='#1a1410'" title="Choose MP3 master, WAV master, or WAV stems">↓ EXPORT AUDIO</button>
+        <button id="export-midi-btn" onclick="exportPatternAsMidi()" style="background:#1a1410;border:1px solid #ff7a1a88;color:#ff9440;font-family:inherit;font-size:11px;font-weight:700;letter-spacing:0.16em;padding:8px 18px;border-radius:4px;cursor:pointer;text-shadow:0 1px 4px rgba(0,0,0,0.9);" onmouseover="this.style.background='#2a1e0e'" onmouseout="this.style.background='#1a1410'" title="Exports each drum track (K/S/H/O/C/R) as a separate .mid file, all packed in one .zip (GM drums, channel 10, swing + velocities baked in, length = sequencer length)">↓ EXPORT MIDI (.ZIP)</button>
+      </div>
+      <div class="info-pane" id="info-panel" style="display:none;">
+        <div class="info-row"><span class="info-key">RIGHT-CLICK (K/S/H/O/C/R)</span><span>→ shuffle + load samples</span></div>
+        <div class="info-row"><span class="info-key">CLIC GAUCHE (K/S/H/O/C/R)</span><span>→ joue le sample actif</span></div>
+        <div class="info-row"><span class="info-key">LONG DRUM</span><span>→ mute / unmute</span></div>
+        <div class="info-row"><span class="info-key">PITCH btn</span><span>→ faders = accordage ±12 st</span></div>
+        <div class="info-row"><span class="info-key">HI-PASS / LOW-PASS</span><span>→ faders = filtre par piste</span></div>
+        <div class="info-row"><span class="info-key">SP / P (sous faders 7-8)</span><span>→ clic droit = charger un sample</span></div>
+        <div class="info-row"><span class="info-key">TIMESHIFT</span><span>→ décalage humain ±50 ms</span></div>
+        <div class="info-row"><span class="info-key">⟳ (par piste)</span><span>→ shuffle une piste seule</span></div>
+        <div class="info-row"><span class="info-key">⟳ SHUFFLE ALL</span><span>→ shuffle toutes les pistes</span></div>
+        <div class="info-row"><span class="info-key">DOUBLE-TAP TS</span><span>→ reset un slider timeshift</span></div>
+        <div class="info-row"><span class="info-key">VINTAGE dbl-clk</span><span>→ shuffle bruit vinyle aléatoire</span></div>
+        <div class="info-row"><span class="info-key">VINTAGE clic droit</span><span>→ charger ses propres vinyles</span></div>
+        <div class="info-row"><span class="info-key">SEQ 16 PAS</span><span>→ éditer / voir pattern actif</span></div>
+        <div class="info-row"><span class="info-key">SAVE / LOAD</span><span>→ sauvegarder/charger un pattern</span></div>
+        <div class="info-row"><span class="info-key">↩ UNDO</span><span>→ annuler drums/shuffle/marqueurs (50 niveaux)</span></div>
+        <div class="info-row"><span class="info-key">SPACE</span><span>→ play / stop (clavier)</span></div>
+        <div class="info-row"><span class="info-key">↓ EXPORT AUDIO</span><span>→ choose MP3 master, WAV master, or WAV stems</span></div>
+        <div class="info-row"><span class="info-key">↓ EXPORT MIDI</span><span>→ six drum tracks as .mid files in one .zip</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" style="display:flex;justify-content:space-between;align-items:center;gap:14px;">
+    <span style="user-select:none;">GR4600</span>
+    <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;">
+      <span id="save-slots-info" style="font-size:8px;letter-spacing:0.1em;color:#8a7a6a;">8/8</span>
+      <button class="pact-btn save" onclick="savePattern()" title="Save current pattern" style="padding:3px 10px;line-height:normal;letter-spacing:0.12em;">💾 SAVE</button>
+      <button class="pact-btn load" onclick="loadPattern()" title="Load a saved pattern" style="padding:3px 10px;line-height:normal;letter-spacing:0.12em;">📂 LOAD</button>
+      <button class="pact-btn save" onclick="exportTracksAsWav()" title="Export MP3, WAV, or stems" style="padding:3px 10px;line-height:normal;letter-spacing:0.12em;">↓ EXPORT</button>
+<button id="contact-btn" onclick="openContactPopup()" title="Open Glitchrealm" style="padding:3px 10px;font-size:11px;letter-spacing:0.12em;font-weight:700;font-family:inherit;cursor:pointer;border-radius:3px;background:linear-gradient(180deg,var(--btn-light),var(--surface-mid));border:1px solid var(--border-color);color:var(--text-knob);box-shadow:0 2px 0 var(--btn-shadow);transition:all 0.12s;">✉ GLITCHREALM</button>
+    </div>
+  </div>
+
+  <!-- SEO / ABOUT — English indexable content -->
+  <!-- Visually hidden: stays available to search engines and screen readers. -->
+  <section class="seo-about" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0;">
+    <h1 style="font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#2e2922;margin-bottom:9px;">
+      <span style="color:var(--accent);">GR4600</span> — online groovebox &amp; drum machine
+    </h1>
+    <p style="margin-bottom:8px;">
+      <strong>GR4600</strong> is a free <strong>online groovebox</strong> and <strong>drum machine</strong> that runs
+      entirely in your web browser — nothing to install. Build beats on the <strong>step sequencer</strong>, lock the feel with
+      the <strong>shuffle &amp; swing</strong> engine, drop your own loops into the <strong>sampler</strong>, stack
+      <strong>drum kits</strong>, and rough things up with <strong>lo-fi, vintage and bitcrush FX</strong>. Mix every track with
+      EQ and compression, play basslines on the keyboard, then <strong>export to WAV</strong> (stems, master, or a live take).
+    </p>
+    <h2 style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#5a4a3a;margin:4px 0 5px;">Features</h2>
+    <ul style="list-style:none;display:flex;flex-wrap:wrap;gap:4px 14px;padding:0;margin:0 0 10px;color:#4a4036;">
+      <li>▸ Step sequencer</li>
+      <li>▸ Shuffle &amp; swing groove</li>
+      <li>▸ Drum synthesis (Web Audio)</li>
+      <li>▸ Sampler &amp; slicing</li>
+      <li>▸ Drum kits / DRUMS BANK</li>
+      <li>▸ Lo-fi &amp; vintage FX</li>
+      <li>▸ Mixer · EQ · compression</li>
+      <li>▸ Bass keyboard</li>
+      <li>▸ WAV export</li>
+    </ul>
+
+    <h2 style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#5a4a3a;margin:4px 0 5px;">FAQ</h2>
+    <div style="color:#4a4036;">
+      <p style="margin-bottom:6px;"><strong>Is GR4600 free?</strong> Yes — it's 100% free and runs in your browser, no account and no download required.</p>
+      <p style="margin-bottom:0;"><strong>Do I need to install anything?</strong> No. It's a web app built on the Web Audio API — open the page and start making beats.</p>
+    </div>
+
+    <p style="margin-top:10px;font-size:10px;color:#6a5a4a;letter-spacing:0.04em;">
+      Online groovebox · browser drum machine · beat maker · rhythm machine — by Glitchrealm.
+    </p>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is GR4600 free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. GR4600 is 100% free and runs entirely in your browser, with no account and no download required." }
+        },
+        {
+          "@type": "Question",
+          "name": "GR4600 est-il gratuit ?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Oui, GR4600 est totalement gratuit et fonctionne directement dans le navigateur, sans installation ni inscription." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to install anything to use GR4600?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. GR4600 is a web application built on the Web Audio API. Just open the page in a modern browser and start making beats." }
+        }
+      ]
+    }
+    </script>
+  </section>
+
+</div>
+
+<!-- Account popup (hors .machine pour éviter le zoom) -->
+<div id="account-overlay" class="acc-overlay" style="display:none;" onclick="closeAccount()">
+  <div id="account-box" class="acc-card" onclick="event.stopPropagation()">
+    <button class="acc-close" onclick="closeAccount()" title="Close">✕</button>
+
+    <!-- Bandeau + avatar circulaire qui le chevauche -->
+    <div class="acc-banner"></div>
+    <div class="acc-body">
+      <div class="acc-avatar">
+        <img id="account-photo" src="assets/glitchrealm-logo.webp" alt="Glitchrealm logo">
+      </div>
+      <div class="acc-grade-wrap"><span id="account-grade" class="acc-grade">NOT RANKED YET</span></div>
+
+      <!-- Barre de progression HORIZONTALE, juste sous le grade -->
+      <div class="acc-gauge-wrap"><div id="xp-gauge"></div></div>
+
+      <div id="acc-kit-inventory" class="acc-kit-inventory"></div>
+
+      <div class="acc-field">
+        <label class="acc-label" for="account-name">NAME</label>
+        <input id="account-name" class="acc-input" type="text" maxlength="40" placeholder="Your name">
+      </div>
+      <div class="acc-field">
+        <label class="acc-label" for="account-notes">NOTES</label>
+        <textarea id="account-notes" class="acc-textarea" rows="9" maxlength="2000" placeholder="Your personal notes…"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact popup (hors .machine pour éviter le zoom) -->
+<div id="contact-overlay" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);">
+  <div id="contact-box" style="background:#f5f0e8;border:2px solid #d4a96a;border-radius:16px;padding:32px 36px;width:440px;max-width:94vw;font-family:'Share Tech Mono','OCR B','Courier New',monospace;box-shadow:0 12px 50px rgba(0,0,0,0.5);">
+    <div style="text-align:center;margin-bottom:20px;">
+      <img src="assets/glitchrealm-logo.webp" style="width:80px;height:80px;object-fit:contain;mix-blend-mode:multiply;display:block;margin:0 auto 10px;">
+      <div style="font-size:20px;color:#7a3a0a;letter-spacing:0.18em;font-weight:700;">GET IN TOUCH</div>
+    </div>
+    <!-- honeypot : invisible pour les humains, rempli par les bots -->
+    <input id="cf-hp" type="text" name="website" tabindex="-1" aria-hidden="true" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;">
+    <input id="cf-name" type="text" placeholder="Your name" maxlength="80" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #c8b090;color:#2a1a08;font-family:'Share Tech Mono','OCR B','Courier New',monospace;font-size:14px;padding:10px 12px;border-radius:8px;outline:none;margin-bottom:12px;">
+    <input id="cf-email" type="email" placeholder="Your email address" maxlength="120" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #c8b090;color:#2a1a08;font-family:'Share Tech Mono','OCR B','Courier New',monospace;font-size:14px;padding:10px 12px;border-radius:8px;outline:none;margin-bottom:12px;">
+    <textarea id="cf-message" placeholder="Your message…" rows="5" maxlength="2000" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #c8b090;color:#2a1a08;font-family:'Share Tech Mono','OCR B','Courier New',monospace;font-size:14px;padding:10px 12px;border-radius:8px;outline:none;margin-bottom:12px;resize:vertical;"></textarea>
+    <div id="cf-captcha-label" style="font-size:13px;color:#5a3a10;margin-bottom:8px;font-style:italic;"></div>
+    <input id="cf-captcha" type="number" placeholder="Your answer" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #c8b090;color:#2a1a08;font-family:'Share Tech Mono','OCR B','Courier New',monospace;font-size:14px;padding:10px 12px;border-radius:8px;outline:none;margin-bottom:14px;">
+    <div id="cf-status" style="font-size:13px;min-height:18px;margin-bottom:10px;text-align:center;font-style:italic;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeContactPopup()" style="flex:1;background:#fff;border:1.5px solid #c8b090;color:#7a6a5a;font-family:'Share Tech Mono','OCR B','Courier New',monospace;font-size:13px;padding:10px;border-radius:8px;cursor:pointer;">Cancel</button>
+      <button id="cf-submit" onclick="submitContact()" style="flex:2;background:#c05a00;border:none;color:#fff;font-family:'Share Tech Mono','OCR B','Courier New',monospace;font-size:14px;padding:10px;border-radius:8px;cursor:pointer;font-weight:700;letter-spacing:0.08em;">SEND ✉</button>
+    </div>
+  </div>
+</div>
+
+<!-- Glitchrealm popup -->
+<div id="glitchrealm-popup-overlay" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);" onclick="closeGlitchrealmPopup()">
+  <div style="position:relative;background:#f0ece4;border:1px solid #c8c0b0;border-radius:12px;padding:36px 40px;width:380px;max-width:90vw;max-height:88vh;overflow-y:auto;text-align:center;font-family:inherit;letter-spacing:0.12em;" onclick="event.stopPropagation()">
+    <!-- FR / ENG toggle -->
+    <div style="position:absolute;top:12px;right:14px;display:flex;gap:4px;">
+      <button class="gr-lang-btn" data-lang="fr" onclick="glitchrealmSetLang('fr')" style="background:none;border:1px solid #c8c0b0;color:#5a4a3a;font-family:inherit;font-size:11px;letter-spacing:0.1em;padding:5px 11px;border-radius:3px;cursor:pointer;opacity:0.45;font-weight:400;">FR</button>
+      <button class="gr-lang-btn" data-lang="en" onclick="glitchrealmSetLang('en')" style="background:none;border:1px solid #c8c0b0;color:#5a4a3a;font-family:inherit;font-size:11px;letter-spacing:0.1em;padding:5px 11px;border-radius:3px;cursor:pointer;opacity:1;font-weight:700;">ENG</button>
+    </div>
+    <img src="assets/glitchrealm-logo.webp" style="width:90px;height:90px;object-fit:contain;margin-bottom:20px;display:block;margin-left:auto;margin-right:auto;">
+    <div style="font-size:12px;color:#5a4a3a;line-height:2;">
+      <span class="gr-txt" data-cti="header">GR4600 designed and conceived by<br><span style="color:var(--accent);font-weight:700;">Mani Deïz</span>.<br><br>Helped by <span style="color:orange;font-weight:700;">François Frimont</span> and <span style="color:orange;font-weight:700;">Romain Mithault</span>.</span>
+    </div>
+
+    <!-- Update note -->
+    <style>
+      #gr-changelog::-webkit-scrollbar { width: 6px; }
+      #gr-changelog::-webkit-scrollbar-track { background: transparent; }
+      #gr-changelog::-webkit-scrollbar-thumb { background: #c8b89e; border-radius: 6px; }
+      #gr-changelog::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+      #gr-changelog { scrollbar-width: thin; scrollbar-color: #c8b89e transparent; }
+    </style>
+    <div id="gr-changelog" style="margin-top:22px;padding-top:6px;border-top:1px solid #c8c0b0;text-align:left;font-size:12px;color:#5a4a3a;line-height:1.85;">
+      <div style="text-align:center;color:#000;font-weight:700;letter-spacing:0.18em;font-size:14px;margin-bottom:10px;padding-top:10px;"><span class="gr-txt" data-cti="cl_title">UPDATE</span></div>
+
+      <!-- v1.05 — ouvert par défaut -->
+      <button onclick="glitchrealmClToggle(this)" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid #d8d0c4;padding:10px 2px;cursor:pointer;font-family:inherit;letter-spacing:0.18em;font-size:11px;font-weight:700;color:#5a4a3a;">
+        <span>v1.05</span><span style="font-size:9px;transition:transform 0.2s;display:inline-block;transform:rotate(180deg);">▼</span>
+      </button>
+      <ul style="margin:0;padding:0 2px 10px 0;list-style:none;">
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_0"><b>Trim editor on every pad</b> — right-click (or long-press on touch) any pad to open a zoomable waveform editor: drag the edges to cut start/end, drag the top corners for attack / decay. Wheel to zoom, drag the background to pan, release to preview. Works on drum pads, sampler slices and custom pads.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_1"><b>Drum trim &amp; envelope</b> — kick, snare, hats… now each have their own trim + attack/decay, kept in sync with the fader corner dots. Applied in playback, WAV export and saved with your slots.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_2"><b>⧉ Copy pad</b> — the pad menu now has a COPY button: pick any destination pad across all 4 banks to duplicate a sound.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_3"><b>⌁ NOTE mode</b> — new per-pad gate toggle: NOTE ON = the pad plays while held and stops on release (sustained samples, bass lines). NOTE OFF = classic one-shot.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_4"><b>Sampler waveform zoom</b> — + / − buttons (or mouse wheel) in the sampler toolbar zoom in up to 1/4096th of the buffer for precise slice placement.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_5"><b>⊘ DRUMS — remove drums</b> — new sampler button: harmonic/percussive separation (HPSS, pure JS, offline) strips the beat from any loaded sample so you can keep the melody/bass/vocals and play your own drums over it. Undoable in one click.</span></li>
+        <li style="margin-bottom:0;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v105_6"><b>Touch fix</b> — opening the pad menu with a long-press no longer fires the action twice.</span></li>
+      </ul>
+
+      <!-- v1.04 — replié par défaut -->
+      <button onclick="glitchrealmClToggle(this)" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid #d8d0c4;padding:10px 2px;cursor:pointer;font-family:inherit;letter-spacing:0.18em;font-size:11px;font-weight:700;color:#5a4a3a;">
+        <span>v1.04</span><span style="font-size:9px;transition:transform 0.2s;display:inline-block;transform:rotate(0deg);">▼</span>
+      </button>
+      <ul style="margin:0;padding:0 2px 10px 0;list-style:none;display:none;">
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v104_0"><b>Full MIDI controller support</b> — pads, piano and sampler all respond to MIDI notes with real velocity. Works with any USB/MIDI keyboard or pad controller.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v104_1"><b>MPC mode</b> — toggle between MPC layout (Akai C0 = pad 1, base 24) and piano layout (C4 = pad 1, base 60). Both ranges are accepted simultaneously — no mode switch needed when using both at once.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v104_2"><b>MIDI transport controls</b> — Start / Continue → play, Stop → stop. Double-tap Stop (under 400 ms) cuts all sounds instantly. MIDI Clock ignored to avoid spam.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v104_3"><b>Auto-reconnect &amp; watchdog</b> — hotplug detection every 2 s, automatic permission re-request every 5 s if all devices disappear. MIDI stays live even after cable pull.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v104_4"><b>Latency compensation</b> — audio is triggered retroactively by the JS event-loop delay (~5–15 ms) so drum hits land on the exact MIDI timestamp, not after.</span></li>
+      </ul>
+
+      <!-- v1.03 — replié par défaut -->
+      <button onclick="glitchrealmClToggle(this)" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid #d8d0c4;padding:10px 2px;cursor:pointer;font-family:inherit;letter-spacing:0.18em;font-size:11px;font-weight:700;color:#5a4a3a;">
+        <span>v1.03</span><span style="font-size:9px;transition:transform 0.2s;display:inline-block;transform:rotate(0deg);">▼</span>
+      </button>
+      <ul style="margin:0;padding:0 2px 10px 0;list-style:none;display:none;">
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v103_0"><b>Master FX rack</b> — 16 studio effects on the master bus — reverb, delay, chorus, flanger, phaser, lo-fi, crusher, tape echo, vinyl sim, grain and more. Stack up to 4 at once.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v103_1"><b>Health monitor</b> — silent background watchdog: auto-detects and recovers AudioContext freezes, scheduler stalls, and audio node crashes without interrupting your session.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v103_2"><b>New COMP / MASTER icons</b> — EQ, compressor, tape, widener, limiter and LUFS sections now have dedicated SVG panel icons.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v103_3"><b>New GR4600 identity</b> — Glitchrealm branding now appears across the interface.</span></li>
+      </ul>
+
+      <!-- v1.02 — replié par défaut -->
+      <button onclick="glitchrealmClToggle(this)" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;border-top:1px solid #d8d0c4;padding:10px 2px;cursor:pointer;font-family:inherit;letter-spacing:0.18em;font-size:11px;font-weight:700;color:#5a4a3a;">
+        <span>v1.02</span><span style="font-size:9px;transition:transform 0.2s;display:inline-block;transform:rotate(0deg);">▼</span>
+      </button>
+      <ul style="margin:0;padding:0 2px 10px 0;list-style:none;display:none;">
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v102_0"><b>Editable sequencer</b> — click a SEQ block to edit it live (the wheel turns red), duplicate it into an independent variation.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v102_1"><b>Variable grid resolution</b> — 1/16, 1/32 and triplets (1/8T, 1/16T). Right-click a step to double it (roll ×2/×3/×4).</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v102_2"><b>Reworked TIME CORRECT</b> — accessible straight from the screen, next to the BPM.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v102_3"><b>Tape machine</b> — magnetic tape emulation (Ampex ATR-102) added to the MASTER, with INPUT / OUTPUT / BYPASS.</span></li>
+        <li style="margin-bottom:8px;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v102_4"><b>Reworked WAV export</b> — offline rendering: perfect timing, stems + master exported in a single click.</span></li>
+        <li style="margin-bottom:0;padding-left:12px;position:relative;"><span style="position:absolute;left:0;color:var(--accent);">·</span><span class="gr-txt" data-cti="v102_5"><b>Fixes</b> — sampler pads (slice count) and mute/solo stuck between blocks.</span></li>
+      </ul>
+      <div style="border-top:1px solid #d8d0c4;"></div>
+    </div>
+
+    <button class="gr-txt" data-cti="close_btn" onclick="closeGlitchrealmPopup()" style="margin-top:22px;background:none;border:1px solid #c8c0b0;color:#8a7a6a;font-family:inherit;font-size:9px;letter-spacing:0.14em;padding:6px 16px;border-radius:3px;cursor:pointer;">CLOSE</button>
+  </div>
+</div>
+
+<!-- DRUMS BANK popup -->
+<style>
+  #drumbank-overlay { backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+  #drumbank-box {
+    display: flex; flex-direction: column; max-height: 86vh;
+    background: #1a1814;
+    border: 1px solid #ff9440aa;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.8);
+    animation: dbkPop 0.22s cubic-bezier(.2,.9,.3,1.3);
+  }
+  #drumbank-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+  #drumbank-list::-webkit-scrollbar { width: 7px; }
+  #drumbank-list::-webkit-scrollbar-thumb { background: var(--accent-dim-strong); border-radius: 4px; }
+  #drumbank-header { flex-shrink: 0; }
+  @keyframes dbkPop { from { opacity:0; transform: translateY(10px) scale(0.97); } to { opacity:1; transform:none; } }
+  #drumbank-close:hover { color: var(--accent-bright); }
+  .dbk-row { transition: border-color .15s, box-shadow .15s, background .15s; }
+  .dbk-thumb img { display: block; }
+  .dbk-btn { transition: filter .15s, box-shadow .15s, background .15s, border-color .15s, color .15s; }
+  .dbk-btn-activate:hover { background:#3a2a14 !important; border-color: var(--accent) !important; color: var(--accent-light) !important; box-shadow: 0 0 12px var(--accent-glow-40); }
+  .dbk-btn-active:hover { filter: brightness(1.08); box-shadow: 0 0 14px var(--accent-glow-40); }
+</style>
+<div id="drumbank-overlay" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,0.62);" onclick="closeDrumBank(event)">
+  <div id="drumbank-box" style="position:relative;border-radius:12px;padding:24px 28px;width:360px;font-family:inherit;" onclick="event.stopPropagation()">
+    <button id="drumbank-close" onclick="closeDrumBank()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#9a8e7e;font-size:19px;cursor:pointer;line-height:1;transition:color .15s;z-index:2;">✕</button>
+    <div id="drumbank-header" style="display:flex;flex-direction:column;align-items:center;margin-bottom:16px;">
+      <img src="assets/glitchrealm-logo.webp" alt="Glitchrealm logo" style="width:92px;height:92px;object-fit:contain;margin-bottom:8px;filter:drop-shadow(0 0 12px var(--accent-glow-40));">
+      <span style="font-size:14px;color:var(--accent-bright);letter-spacing:0.26em;font-weight:700;text-shadow:0 0 12px var(--accent-glow-40);">DRUMS BANK</span>
+      <span style="font-size:11px;color:#cbbaa0;letter-spacing:0.08em;margin-top:8px;line-height:1.5;text-align:center;">Activate one or more kits — their sounds stack together in the mix.</span>
+    </div>
+    <div id="drumbank-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+  </div>
+</div>
+
+<!-- WAV export progress overlay -->
+<div id="wav-export-progress" style="
+  display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  flex-direction:column;gap:8px;align-items:center;
+  padding:16px 28px;z-index:10000;pointer-events:none;
+  background:rgba(20,12,4,0.94);border:1px solid #ff7a1a;
+  border-radius:8px;box-shadow:0 6px 28px rgba(0,0,0,0.7);
+">
+  <div id="wav-export-label" style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#ff9440;font-family:monospace;white-space:nowrap;">EXPORT WAV · 0%</div>
+  <div style="width:220px;height:8px;background:#1a1208;border:1px solid #5a3410;border-radius:4px;overflow:hidden;">
+    <div id="wav-export-bar" style="width:0%;height:100%;background:linear-gradient(90deg,#ff7a1a,#ffb066);transition:width 0.12s linear;"></div>
+  </div>
+</div>
+
+<!--  feedback popup -->
+<div id="beta-overlay" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);">
+  <div style="background:#f0ece4;border:1px solid #c8c0b0;border-radius:8px;padding:28px 32px;width:460px;font-family:inherit;" onclick="event.stopPropagation()">
+    <img src="assets/glitchrealm-logo.webp" style="width:180px;height:180px;object-fit:contain;display:block;margin:0 auto 16px;mix-blend-mode:multiply;">
+    <div style="font-size:15px;color:var(--accent);letter-spacing:0.22em;font-weight:700;margin-bottom:14px;"> FEEDBAC<span id="secret-z" onclick="openFeedbackViewer()" style="cursor:default;user-select:none;">K</span></div>
+    <input id="bf-name" type="text" placeholder="Your name (optional)" style="width:100%;box-sizing:border-box;background:#fff;border:1px solid #c8c0b0;color:#3a2a1a;font-family:inherit;font-size:11px;letter-spacing:0.08em;padding:7px 10px;border-radius:4px;margin-bottom:8px;outline:none;">
+    <textarea id="bf-comment" placeholder="Your comment…" rows="8" style="width:100%;box-sizing:border-box;background:#fff;border:1px solid #c8c0b0;color:#3a2a1a;font-family:inherit;font-size:11px;letter-spacing:0.08em;padding:7px 10px;border-radius:4px;resize:vertical;outline:none;"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+      <span id="bf-status" style="font-size:10px;letter-spacing:0.08em;"></span>
+      <div style="display:flex;gap:8px;">
+        <button onclick="closeBetaFeedback()" style="background:none;border:1px solid #c8c0b0;color:#8a7a6a;font-family:inherit;font-size:9px;letter-spacing:0.14em;padding:5px 12px;border-radius:3px;cursor:pointer;">CANCEL</button>
+        <button id="bf-submit" onclick="submitBetaFeedback()" style="background:#2a1e0e;border:1px solid #ff7a1a88;color:#ff9440;font-family:inherit;font-size:9px;letter-spacing:0.14em;padding:5px 12px;border-radius:3px;cursor:pointer;font-weight:700;">SEND</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback viewer (secret Z) -->
+<div id="fv-overlay" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);">
+  <div style="background:#e8e4dc;border-radius:10px;padding:20px 22px;width:360px;max-height:80vh;display:flex;flex-direction:column;font-family:inherit;" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <span style="font-size:10px;color:#2e2922;letter-spacing:0.22em;font-weight:700;">FEEDBACKS</span>
+      <button onclick="closeFeedbackViewer()" style="background:none;border:none;color:#8a7a6a;font-size:16px;cursor:pointer;line-height:1;">✕</button>
+    </div>
+    <div id="fv-stats" style="display:flex;gap:8px;margin-bottom:14px;"></div>
+    <div id="fv-shares" style="margin-bottom:14px;"></div>
+    <div id="fv-ladder" style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;max-height:30vh;overflow-y:auto;"></div>
+    <div id="fv-list" style="overflow-y:auto;display:flex;flex-direction:column;gap:10px;flex:1;"></div>
+  </div>
+</div>
+
+<script type="module" src="src/ui/learn.js?v=4619"></script>
+<script type="module" src="src/main.js?v=4619"></script>
+
+
+<!-- ══ SAMPLE BROWSER MODAL ══════════════════════════════════════ -->
+<div id="smp-browser" style="display:none;">
+  <div id="smp-brw-inner">
+
+    <!-- Titre + fermer -->
+    <div id="smp-brw-titlebar">
+      <span id="smp-brw-title">SAMPLE BROWSER</span>
+      <button id="smp-browser-close-btn">✕  CLOSE</button>
+    </div>
+
+    <!-- Breadcrumb + changer dossier -->
+    <div id="smp-brw-nav">
+      <div id="smp-browser-crumb"><span style="color:#333348;font-size:9px;">NO FOLDER OPEN</span></div>
+      <button id="smp-browser-change-btn">📁  CHANGE FOLDER</button>
+    </div>
+
+    <!-- Barre de recherche (filtre le dossier courant) -->
+    <div id="smp-brw-searchbar">
+      <span id="smp-brw-search-icon">🔍</span>
+      <input type="text" id="smp-brw-search" placeholder="SEARCH IN THIS FOLDER…" autocomplete="off" spellcheck="false">
+      <button id="smp-brw-search-clear" title="Clear search" style="display:none;">✕</button>
+    </div>
+
+    <!-- Liste des fichiers -->
+    <div id="smp-browser-list"></div>
+
+    <!-- Now playing footer -->
+    <div id="smp-brw-footer">
+      <div id="smp-brw-nowplaying" style="visibility:hidden;">
+        <span id="smp-brw-np-icon">▶</span>
+        <span id="smp-brw-np-name"></span>
+        <div id="smp-brw-np-track">
+          <div id="smp-brw-np-rail"><div id="smp-brw-np-bar"></div></div>
+          <div id="smp-brw-np-thumb"></div>
+        </div>
+        <span id="smp-brw-np-dur"></span>
+      </div>
+      <div id="smp-brw-right-controls" style="display:flex;align-items:center;gap:14px;margin-left:auto;flex-shrink:0;">
+        <button id="smp-brw-stop-btn" title="Stop preview">■</button>
+        <div id="smp-brw-vol-wrap">
+          <span id="smp-brw-vol-icon">🔊</span>
+          <input type="range" id="smp-brw-vol" min="0" max="1" step="0.01" value="0.8" title="Volume preview">
+        </div>
+        <button id="smp-browser-load-btn" disabled>⬆  LOAD THIS SAMPLE</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+</body>
+</html>
