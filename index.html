@@ -453,13 +453,9 @@
     overflow: hidden;
     background: var(--dark);
     box-shadow: 0 24px 60px rgba(21,21,28,0.12);
+    transition: border-color .2s ease, transform .2s ease;
   }
-  .viz-card iframe {
-    width: 100%;
-    height: 640px;
-    border: 0;
-    display: block;
-  }
+  .viz-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   .viz-fallback {
     text-align: center;
     margin-top: 16px;
@@ -469,7 +465,6 @@
     color: var(--dim);
   }
   .viz-fallback a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
-  @media (max-width: 900px) { .viz-card iframe { height: 460px; } }
 
   /* ─── STORE / MERCH GRID ─── */
   .store-grid, .merch-grid {
@@ -1217,9 +1212,15 @@
     <p>The Realm Visualizer runs live right here on glitchrealm.com. Drop any MIDI file, choose your colorway, and watch your arrangement render in real time — 3D depth, bloom, ripple rings on every note.</p>
   </div>
   <div class="viz-card">
-    <iframe src="https://app.dozingwhale.net/vidi-studio/" title="Realm Visualizer" loading="lazy" allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>
+    <a href="https://app.dozingwhale.net/vidi-studio/" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:64px 24px;text-decoration:none;color:inherit;min-height:360px;">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" style="opacity:0.85;">
+        <path d="M4 4h16v16H4V4z" stroke="currentColor" stroke-width="1.4" opacity="0.35"/>
+        <path d="M9 8l7 4-7 4V8z" fill="currentColor"/>
+      </svg>
+      <span style="font-family:'Space Mono',monospace;font-size:0.85rem;letter-spacing:0.08em;text-align:center;">Launch Realm Visualizer<br><span style="opacity:0.5;font-size:0.7rem;">Opens app.dozingwhale.net in a new tab →</span></span>
+    </a>
   </div>
-  <p class="viz-fallback">Visualizer not loading? <a href="https://app.dozingwhale.net/vidi-studio/" target="_blank">Open it directly in a new tab →</a></p>
+  <p class="viz-fallback">Tool didn't open? <a href="https://app.dozingwhale.net/vidi-studio/" target="_blank">Open it directly here →</a></p>
 </section>
 </div>
 
