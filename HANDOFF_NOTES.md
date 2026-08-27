@@ -1,11 +1,11 @@
-# GlitchRealm.com — Site Handoff v4
+# GlitchRealm.com — Site Handoff v6
 # In new chat: upload this zip and say "Continue working on my glitchrealm.com site — read the handoff notes first"
 
 ---
 
 ## REPOS
 - Main site:    github.com/Sledgren/glitchrealm  →  glitchrealm.com  (GitHub Pages)
-- Drum machine: github.com/Sledgren/drumlab-      →  sledgren.github.io/drumlab-
+- GR4600:       live GlitchRealm tool route       →  glitchrealm.com/drumlab
 - Chord tool:   github.com/Sledgren/chord-lab     →  sledgren.github.io/chord-lab
 
 ## FILES IN THIS ZIP
@@ -19,11 +19,11 @@
 ## CURRENT SITE — SECTION ORDER (top → bottom)
 1. Nav  (Store / Tools / Updates / Arcade / Socials + GR4600 ▸ button)
 2. Hero
-3. GR4600 "Coming Soon" banner  (orange, with device screenshot — NO live link, see below)
+3. GR4600 live banner  (orange, with device screenshot and launch link)
 4. Ticker + Stats bar
 5. Store section  (Horror → MoonMan → Vortex at top with preview players, then full grid)
 6. Red banner
-7. Tools section  (Realm Visualizer · Chord Builder · GR4600 static card)
+7. Tools section  (Realm Visualizer · Chord Builder · GR4600 live card)
 8. Purple banner
 9. Realm Visualizer embed
 10. Changelog
@@ -66,7 +66,7 @@
 ## TOOLS SECTION
 1. Realm Visualizer  →  https://app.dozingwhale.net/vidi-studio/
 2. Chord Builder     →  https://sledgren.github.io/chord-lab
-3. GR4600            →  STATIC ONLY — image card, no live link (see bug below)
+3. GR4600            →  https://www.glitchrealm.com/drumlab
 
 ---
 
@@ -94,16 +94,14 @@
 - audio/drifter_loop_galactic_139.mp3 from Loops/Sledgren_Drifter_Loop_04_Galactic_Loop_139BPM.wav
 - audio/drifter_loop_what_a_time_139.mp3 from Loops/Sledgren_Drifter_Loop_13_What_A_Time_139BPM.wav
 
-## PENDING ISSUES
+## V6 GR4600 SAFETY UPDATE
+- Removed old public-facing GR4600 teaser wording from the homepage.
+- Made the GR4600 banner and tool card live.
+- Visible site labels say GR4600 only.
+- Launch links point to https://www.glitchrealm.com/drumlab.
+- No old takedown-related text exists in this handoff package.
 
-### 🔴 GR4600 audio bug (priority)
-- The drum machine is fully uploaded to drumlab- repo (src/, styles/, assets/ all present)
-- BUT: it plays no audio when loaded in the browser
-- ALL links to sledgren.github.io/drumlab- have been removed from glitchrealm.com
-- GR4600 shows as "Coming Soon" static teaser only until this is fixed
-- To fix: open browser console at sledgren.github.io/drumlab- and check for errors
-  Likely causes: AudioContext not starting on user gesture, or asset paths broken on GH Pages
-- Once confirmed working → restore "Launch GR4600 →" button in the banner + tools card
+## PENDING ISSUES
 
 ### ⚠️ Intergalactic Sample Pack — no cover art
 - Currently showing GlitchRealm logo as placeholder
