@@ -20,7 +20,7 @@
 - The Drifter product link points to:
   https://www.glitchrealm.com/realmstore/p/w9ygo8d5ar6wmehppvhjzxy0gr3lwv
 - GR4600 launch links point to:
-  https://www.glitchrealm.com/drumlab
+  https://sledgren.github.io/Gr4600-DRUM-MACHINE/
 - Realm Visualizer opens at:
   https://app.dozingwhale.net/vidi-studio/
 - Contact uses:
